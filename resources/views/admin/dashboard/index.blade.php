@@ -45,7 +45,7 @@
         </div>
 
         <!-- Total Pemasukan -->
-        <div class="mt-16 mb-64 bg-indigo-600 text-white p-6 rounded-xl shadow text-center hover:bg-indigo-700">
+        <div class="mt-8 mb-12 bg-indigo-600 text-white p-6 rounded-xl shadow text-center hover:bg-indigo-700">
             <p class="text-lg font-semibold">Total Pemasukan</p>
             <p class="text-4xl font-extrabold mt-2 tracking-wide">
                 Rp {{ number_format($totalPemasukan, 0, ',', '.') }}
@@ -53,7 +53,7 @@
         </div>
 
         <!-- Grafik -->
-        <div class="mt-32 mb-12">
+        <div class="mt-12 mb-12">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
                 <div class="bg-green-50 border border-green-200 rounded-xl p-6 shadow-md">
                     <h2 class="text-xl font-bold mb-6 text-green-700">Grafik Pemasukan Bulanan ({{ now()->year }})</h2>
