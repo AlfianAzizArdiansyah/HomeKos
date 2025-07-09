@@ -11,8 +11,8 @@ class Kamar extends Model
     protected $fillable = ['nama_kamar', 'status', 'harga', 'fasilitas'];
     protected $casts = ['fasilitas' => 'array'];
 
-    public function penyewa()
+    public function penghuni()
     {
-        return $this->hasOne(Penyewa::class);
+        return $this->hasOne(Penghuni::class);
     }
 }

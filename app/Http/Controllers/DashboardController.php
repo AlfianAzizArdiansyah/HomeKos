@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kamar;
 use App\Models\Pembayaran;
-use App\Models\Penyewa;
+use App\Models\Penghuni;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -12,9 +12,9 @@ class DashboardController extends Controller
     public function index()
     {
         $totalKamar = Kamar::count();
-        $kamarTerisi = Kamar::whereHas('penyewa')->count();
+        $kamarTerisi = Kamar::whereHas('penghuni')->count();
         $kamarTersedia = $totalKamar - $kamarTerisi;
-        $penyewaAktif = Penyewa::count();
+        $penghuniAktif = Penghuni::count();
         $totalPemasukan = Pembayaran::where('status', 'lunas')->sum('jumlah');
 
         // Data pemasukan per bulan
@@ -41,7 +41,7 @@ class DashboardController extends Controller
             'totalKamar',
             'kamarTerisi',
             'kamarTersedia',
-            'penyewaAktif',
+            'penghuniAktif',
             'totalPemasukan',
             'pemasukanChart',
             'pemasukanTahunan'

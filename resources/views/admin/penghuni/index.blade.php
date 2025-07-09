@@ -1,21 +1,21 @@
 @extends('layouts.app')
 @section('content')
-    <div x-data="{ tambahPenyewa: false, editPenyewa: false, penyewaData: {} }" class="p-6 bg-white rounded-xl shadow-md">
+    <div x-data="{ tambahPenghuni: false, editPenghuni: false, penghuniData: {} }" class="p-6 bg-white rounded-xl shadow-md">
 
         <!-- Judul & Tombol -->
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-4xl font-extrabold text-gray-800 tracking-wide">Manajemen Penghuni</h1>
-            <button @click="tambahPenyewa = true"
+            <button @click="tambahPenghuni = true"
                 class="bg-blue-600 text-white text-lg px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition-all duration-200">
                 Tambah Penghuni
             </button>
         </div>
 
         <!-- Modal Tambah -->
-        @include('admin.penyewa.create')
+        @include('admin.penghuni.create')
 
         <!-- Modal Edit -->
-        @include('admin.penyewa.edit')
+        @include('admin.penghuni.edit')
 
         <!-- Tabel -->
         <div class="overflow-x-auto rounded-lg shadow">
@@ -24,30 +24,32 @@
                     <tr>
                         <th class="px-6 py-4">Kamar</th>
                         <th class="px-6 py-4">Nama</th>
-                        <th class="px-6 py-4">No HP</th>
+                        <th class="px-6 py-4">No HP</th>                        
+                        <th class="px-6 py-4">Tanggal Masuk</th>                        
                         <th class="px-6 py-4">Status</th>
                         <th class="px-6 py-4">KTP</th>
                         <th class="px-6 py-4">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($penyewas as $penyewa)
+                    @forelse ($penghunis as $penghuni)
                         <tr class="border-t hover:bg-blue-50 text-lg">
-                            <td class="px-6 py-4">{{ $penyewa->kamar->nama_kamar ?? '—' }}</td>
-                            <td class="px-6 py-4">{{ $penyewa->nama }}</td>
-                            <td class="px-6 py-4">{{ $penyewa->no_hp }}</td>
+                            <td class="px-6 py-4">{{ $penghuni->kamar->nama_kamar ?? '—' }}</td>
+                            <td class="px-6 py-4">{{ $penghuni->nama }}</td>
+                            <td class="px-6 py-4">{{ $penghuni->no_hp }}</td>
+                            <td class="px-6 py-4">{{ $penghuni->tanggal_masuk }}</td>
                             <td class="px-6 py-4">
                                 <span
-                                    class="px-3 py-1 rounded-full text-sm font-semibold {{ $penyewa->status === 'aktif' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
-                                    {{ ucfirst($penyewa->status) }}
+                                    class="px-3 py-1 rounded-full text-sm font-semibold {{ $penghuni->status === 'aktif' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                                    {{ ucfirst($penghuni->status) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4">
-                                @if ($penyewa->foto_ktp)
-                                    <a href="{{ asset('storage/' . $penyewa->foto_ktp) }}" target="_blank">
-                                        <img src="{{ asset('storage/' . $penyewa->foto_ktp) }}"
+                                @if ($penghuni->foto_ktp)
+                                    <a href="{{ asset('storage/' . $penghuni->foto_ktp) }}" target="_blank">
+                                        <img src="{{ asset('storage/' . $penghuni->foto_ktp) }}"
                                             class="mx-auto w-24 h-16 object-cover rounded-md border shadow hover:scale-105 transition"
-                                            alt="KTP {{ $penyewa->nama }}">
+                                            alt="KTP {{ $penghuni->nama }}">
                                     </a>
                                 @else
                                     <span class="text-gray-400 italic">Tidak ada</span>
@@ -55,11 +57,11 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex justify-center items-center gap-2">
-                                    <button type="button" @click="editPenyewa = true; penyewaData = @js($penyewa)"
+                                    <button type="button" @click="editPenghuni = true; penghuniData = @js($penghuni)"
                                         class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-5 py-2 rounded-md shadow">
                                         Edit
                                     </button>
-                                    <form method="POST" action="{{ route('admin.penyewa.destroy', $penyewa) }}"
+                                    <form method="POST" action="{{ route('admin.penghuni.destroy', $penghuni) }}"
                                         onsubmit="return confirm('Apakah kamu yakin ingin menghapus data ini?')">
                                         @csrf
                                         @method('DELETE')
@@ -71,8 +73,8 @@
 
                                     <!-- Tombol WhatsApp -->
                                     @php
-                                        $nomorWA = preg_replace('/^0/', '62', $penyewa->no_hp);
-                                        $pesanWA = "Halo $penyewa->nama, saya dari admin kos. Ingin menghubungi terkait tagihan kost bulan ini.";
+                                        $nomorWA = preg_replace('/^0/', '62', $penghuni->no_hp);
+                                        $pesanWA = "Halo $penghuni->nama, saya dari admin kos. Ingin menghubungi terkait tagihan kost bulan ini.";
                                     @endphp
 
                                     <a href="https://wa.me/{{ $nomorWA }}?text={{ urlencode($pesanWA) }}" target="_blank"
@@ -103,7 +105,7 @@
 
         <!-- Navigasi Pagination -->
         <div class="mt-6">
-            {{ $penyewas->links() }}
+            {{ $penghunis->links() }}
         </div>
 
     </div>

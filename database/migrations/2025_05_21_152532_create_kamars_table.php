@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_kamar');
             $table->enum('status', ['tersedia', 'terisi'])->default('tersedia');
             $table->json('fasilitas')->nullable();
+            $table->unsignedBigInteger('harga')->nullable();
             $table->timestamps();
         });
     }
