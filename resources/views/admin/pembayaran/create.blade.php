@@ -1,12 +1,12 @@
 <!-- Modal Tambah Pembayaran -->
-<div x-show="tambahPembayaran" x-cloak x-data="{ 
-    penyewaList: {{ Js::from($penyewas) }}, 
+<div x-show="tambahPembayaran" x-cloak x-data="{penghuniList: {{ Js::from($penghunis) }}, 
     selectedId: '', 
     harga: 0, 
     updateHarga() { 
-        const selected = this.penyewaList.find(p => p.id == this.selectedId); 
+        const selected =penghuniList.find(p => p.id == this.selectedId); 
         this.harga = selected ? selected.kamar?.harga ?? 0 : 0;
     }
+
   }" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
   x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
   x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
@@ -29,21 +29,21 @@
     <form action="{{ route('admin.pembayaran.store') }}" method="POST">
       @csrf
 
-      <!-- Pilih Penyewa -->
+      <!-- penghuni -->
       <div class="mb-4">
-        <label class="block font-semibold mb-1">Penyewa</label>
-        <select name="penyewa_id" x-model="selectedId" @change="updateHarga()" class="w-full border rounded px-4 py-2"
+        <label class="block font-semibold mb-1">penghuni</label>
+        <select name="penghuni_id" x-model="selectedId" @change="updateHarga()" class="w-full border rounded px-4 py-2"
           required>
-          <option value="">-- Pilih Penyewa --</option>
-          <template x-for="penyewa in penyewaList" :key="penyewa.id">
-            <option :value="penyewa.id" x-text="penyewa.nama + ' (' + (penyewa.kamar?.nama_kamar ?? '-') + ')'">
+          <option value="">-- Pilih penghuni --</option>
+          <template x-for="penghuni in penghuniList" :key="penghuni.id">
+            <option :value="penghuni.id" x-text="penghuni.nama + ' penghuni.kamar?.nama_kamar ?? ' -') + ')'">
             </option>
           </template>
         </select>
       </div>
 
       <!-- Jumlah Pembayaran Otomatis -->
-      <div class="mb-4">
+      <div class=" mb-4">
         <label class="block font-semibold mb-1">Jumlah Tagihan</label>
         <input type="number" name="jumlah" x-model="harga"
           class="w-full border rounded px-4 py-2 bg-gray-100 cursor-not-allowed" readonly required>
