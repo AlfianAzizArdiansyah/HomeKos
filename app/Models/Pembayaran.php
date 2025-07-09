@@ -12,6 +12,6 @@ class Pembayaran extends Model
 
     public function penyewa()
     {
-        return $this->belongsTo(Penyewa::class);
+        return $this->belongsTo(Penghuni::class);
     }
 }

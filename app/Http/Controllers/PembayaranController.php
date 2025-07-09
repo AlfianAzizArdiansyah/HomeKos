@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Pembayaran;
-use App\Models\Penyewa;
+use App\Models\Penghuni;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -13,8 +13,8 @@ class PembayaranController extends Controller
 {
     public function index()
     {
-        $pembayarans = Pembayaran::with('penyewa.kamar')->latest()->paginate(10);
-        $penyewas = Penyewa::with('kamar')->get()->map(function ($p) {
+        $pembayarans = Pembayaran::with('penghuni.kamar')->latest()->paginate(10);
+        $penghunis = Penghuni::with('kamar')->get()->map(function ($p) {
             return [
                 'id' => $p->id,
                 'nama' => $p->nama,
@@ -27,37 +27,37 @@ class PembayaranController extends Controller
 
         return view('admin.pembayaran.index', [
             'pembayarans' => $pembayarans,
-            'penyewas' => $penyewas,
+            'penghunis' => $penghunis,
         ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'penyewa_id' => 'required|exists:penyewas,id',
-            'jumlah' => 'required|numeric',
-            'jatuh_tempo' => 'required|date',
+            'penghuni_id' => 'required|exists:penghunis,id',
+            'tanggal_bayar' => 'required|date',
+            'status' => 'required|in:lunas,belum lunas'
         ]);
 
-        $penyewa = Penyewa::with('kamar')->findOrFail($request->penyewa_id);
+        $penghuni = Penghuni::with('kamar')->findOrFail($request->penghuni_id);
+
+        $harga = $penghuni->kamar->harga ?? 0;
 
         Pembayaran::create([
-            'penyewa_id' => $request->penyewa_id,
-            'jumlah' => $request->jumlah,
-            'jatuh_tempo' => $request->jatuh_tempo,
-            'status' => 'belum lunas',
-            'tanggal_bayar' => null,
-            'nomor_kamar' => $penyewa->kamar->nama_kamar ?? '-', // ← otomatis isi
+            'penghuni_id' => $penghuni->id,
+            'tanggal_bayar' => $request->tanggal_bayar,
+            'jumlah' => $harga,
+            'status' => $request->status,
         ]);
 
 
-        return redirect()->route('admin.pembayaran.index')->with('success', 'Tagihan berhasil dibuat.');
+        return redirect()->route('admin.pembayaran.index')->with('success', 'Pembayaran berhasil dibuat.');
     }
 
     public function edit(Pembayaran $pembayaran)
     {
-        $penyewas = Penyewa::all();
-        return view('admin.pembayaran.edit', compact('pembayaran', 'penyewas'));
+        $penghunis = penghuni::all();
+        return view('admin.pembayaran.edit', compact('pembayaran', 'penghunis'));
     }
 
     public function update(Request $request, Pembayaran $pembayaran)
@@ -80,7 +80,7 @@ class PembayaranController extends Controller
 
     public function cetak($id)
     {
-        $pembayaran = Pembayaran::with('penyewa.kamar')->findOrFail($id);
+        $pembayaran = Pembayaran::with('penghuni.kamar')->findOrFail($id);
         $pdf = Pdf::loadView('admin.pembayaran.struk', compact('pembayaran'));
         return $pdf->stream('struk_pembayaran_' . $pembayaran->id . '.pdf');
     }

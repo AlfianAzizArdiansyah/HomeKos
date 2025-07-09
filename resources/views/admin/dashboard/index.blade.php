@@ -36,8 +36,8 @@
             <div class="flex-1 min-w-[200px] bg-pink-500 text-white p-6 rounded-xl shadow hover:bg-pink-600">
                 <div class="flex justify-between items-center">
                     <div>
-                        <p class="text-lg font-semibold">Penyewa Aktif</p>
-                        <p class="text-3xl font-bold mt-2">{{ $penyewaAktif }}</p>
+                        <p class="text-lg font-semibold"> Penghuni Aktif</p>
+                        <p class="text-3xl font-bold mt-2">{{ $penghuniAktif }}</p>
                     </div>
                     <i data-lucide="users" class="w-10 h-10 text-white opacity-70"></i>
                 </div>
@@ -45,7 +45,7 @@
         </div>
 
         <!-- Total Pemasukan -->
-        <div class="mt-16 mb-64 bg-indigo-600 text-white p-6 rounded-xl shadow text-center hover:bg-indigo-700">
+        <div class="mb-6 bg-indigo-600 text-white p-6 rounded-xl shadow text-center hover:bg-indigo-700">
             <p class="text-lg font-semibold">Total Pemasukan</p>
             <p class="text-4xl font-extrabold mt-2 tracking-wide">
                 Rp {{ number_format($totalPemasukan, 0, ',', '.') }}
@@ -53,8 +53,8 @@
         </div>
 
         <!-- Grafik -->
-        <div class="mt-32 mb-12">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+        <div class="mt-6 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-green-50 border border-green-200 rounded-xl p-6 shadow-md">
                     <h2 class="text-xl font-bold mb-6 text-green-700">Grafik Pemasukan Bulanan ({{ now()->year }})</h2>
                     <canvas id="pemasukanBulananChart" height="100"></canvas>
@@ -101,7 +101,9 @@
                     }
                 },
                 plugins: {
-                    legend: { display: true },
+                    legend: {
+                        display: true
+                    },
                     tooltip: {
                         callbacks: {
                             label: ctx => 'Rp ' + new Intl.NumberFormat('id-ID').format(ctx.parsed.y)
@@ -131,12 +133,18 @@
             options: {
                 scales: {
                     y: {
-                        grid: { display: true },
-                        ticks: { display: false }
+                        grid: {
+                            display: true
+                        },
+                        ticks: {
+                            display: false
+                        }
                     }
                 },
                 plugins: {
-                    legend: { display: true },
+                    legend: {
+                        display: true
+                    },
                     tooltip: {
                         callbacks: {
                             label: ctx => 'Rp ' + new Intl.NumberFormat('id-ID').format(ctx.parsed.y)

@@ -15,22 +15,29 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
 
-Route::get('/', function () {
-    return view('welcome');
-});
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KamarController;
-use App\Http\Controllers\PenyewaController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\LaporanController;
-
+use App\Http\Controllers\PenghuniController;
+use App\Http\Controllers\PenghuniKostController;
+use Illuminate\Support\Facades\Auth;
 
 // Redirect default ke login
 Route::get('/', function () {
     return redirect('/login');
 });
+
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('register', [RegisteredUserController::class, 'store']);
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');
+
 
 // // Autentikasi
 // Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
@@ -38,7 +45,7 @@ Route::get('/', function () {
 // Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Group route setelah login (admin-only)
-Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->as('admin.')->middleware(['auth', 'role:admin'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -46,24 +53,29 @@ Route::prefix('admin')->as('admin.')->middleware(['auth'])->group(function () {
     // Manajemen Kamar
     Route::resource('kamar', KamarController::class);
 
-    // Manajemen Penyewa
-    Route::resource('penyewa', PenyewaController::class);
-    Route::put('/admin/penyewa/{penyewa}', [PenyewaController::class, 'update'])->name('admin.penyewa.update');
+    // Manajemen Penghuni
+    Route::resource('penghuni', PenghuniController::class);
+    Route::put('/penghuni/{penghuni}', [PenghuniController::class, 'update'])->name('penghuni.update'); // sudah cukup, karena prefix admin
 
     // Pembayaran
     Route::resource('pembayaran', PembayaranController::class);
     Route::get('/pembayaran/riwayat', [PembayaranController::class, 'riwayat'])->name('pembayaran.riwayat');
-    Route::get('/admin/keuangan/pembayaran', [PembayaranController::class, 'riwayat'])->name('admin.pembayaran.riwayat');
-    Route::get('/admin/pembayaran/edit', [PembayaranController::class, 'editCustom']);
-
+    Route::get('/pembayaran/edit-custom', [PembayaranController::class, 'editCustom'])->name('pembayaran.editCustom');
 
     // Tagihan
     Route::get('/pembayaran/{id}/struk', [PembayaranController::class, 'cetak'])->name('pembayaran.struk');
 
     // Laporan
-    Route::resource('laporan', LaporanController::class);
+    // Route::resource('laporan', LaporanController::class);
 
-    // Export Transaksi (contoh tambahan)
+    // (Opsional) Export Transaksi
     // Route::get('/pembayaran-export', [PembayaranController::class, 'export'])->name('pembayaran.export');
 });
 
+// Untuk penghuni
+Route::prefix('penghuni')->as('penghuni.')->middleware(['auth', 'role:penghuni'])->group(function () {
+    Route::get('/dashboard', [PenghuniKostController::class, 'index'])->name('dashboard');
+    Route::post('/pengaduan', [PenghuniKostController::class, 'storePengaduan'])->name('pengaduan.store');
+    Route::put('/update', [PenghuniKostController::class, 'update'])->name('update');
+    Route::post('/chat/send', [PenghuniKostController::class, 'sendChat'])->name('chat.send');
+});

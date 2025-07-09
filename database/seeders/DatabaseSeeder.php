@@ -21,10 +21,25 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        User::create([
-            'name' => 'Pemilik Kost',
-            'email' => 'admin@kost.com',
-            'password' => Hash::make('password123'),
-        ]);
+        User::create(
+            [
+                'name' => 'Admin Kost',
+                'email' => 'admin@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'), // Ganti dengan password yang aman
+                'role' => 'admin',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Penghuni 1',
+                'email' => 'penghuni1@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'role' => 'penghuni',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
     }
 }

@@ -22,70 +22,70 @@
     </style>
 </head>
 
-<body class="bg-[#f9fafb] text-gray-800 antialiased font-sans">
-    <div class="min-h-screen flex" x-data="{ menuOpen: false, submenuOpen: false }">
-        <aside class="w-64 h-screen flex flex-col justify-between bg-white border-r shadow-sm">
-            <div class="p-6 text-4xl font-extrabold text-blue-700 tracking-wide">HomeKos</div>
+<body class="h-screen overflow-hidden bg-[#f9fafb] text-gray-800 antialiased font-sans">
+    <div class="h-full flex" x-data="{ menuOpen: false, submenuOpen: false }">
+        <aside class="w-64 h-full flex flex-col justify-between bg-white border-r shadow-sm">
+            <div class="p-4 text-4xl font-extrabold text-blue-700 tracking-wide">HomeKos</div>
 
             <nav class="flex-1 space-y-4 px-4 py-4 text-[17px]">
+                @if (Auth::user()->role === 'admin')
+                    <!-- Dashboard -->
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-xl font-bold {{ request()->routeIs('dashboard') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        Dashboard
+                    </a>
 
-                <!-- Dashboard -->
-                <a href="{{ route('admin.dashboard') }}"
-                    class="flex items-center gap-2 px-4 py-3 mb-6 rounded-lg transition hover:bg-blue-100 text-xl font-bold {{ request()->routeIs('dashboard') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                    Dashboard
-                </a>
-
-                <!-- Label MENU -->
-                <div class="mt-10 pt-2 pb-2 text-xs text-gray-500 uppercase tracking-wider">
-                    MENU
-                </div>
-
-                <!-- Kamar -->
-                <a href="{{ route('admin.kamar.index') }}"
-                    class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-[16px] font-semibold {{ request()->routeIs('kamar.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                    <i data-lucide="door-open" class="w-5 h-5"></i>
-                    Kamar
-                </a>
-
-                <!-- Penghuni -->
-                <a href="{{ route('admin.penyewa.index') }}"
-                    class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-[16px] font-semibold {{ request()->routeIs('penyewa.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                    <i data-lucide="users" class="w-5 h-5"></i>
-                    Penghuni
-                </a>
-
-                <!-- Pembayaran -->
-                <div x-data="{ open: {{ request()->routeIs('admin.pembayaran.*') ? 'true' : 'false' }} }"
-                    class="relative">
-                    <button @click="open = !open"
-                        class="w-full flex items-center justify-between px-4 py-2 rounded-lg hover:bg-blue-100 transition text-[16px] font-semibold {{ request()->routeIs('admin.pembayaran.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                        <span class="flex items-center gap-2">
-                            <i data-lucide="wallet" class="w-5 h-5"></i>
-                            Pembayaran
-                        </span>
-                        <i data-lucide="chevron-right" :class="{ 'rotate-90': open }"
-                            class="w-5 h-5 transform transition-transform"></i>
-                    </button>
-
-                    <div x-show="open" x-cloak x-transition class="mt-1 space-y-1">
-                        <a href="{{ route('admin.pembayaran.index') }}"
-                            class="block px-4 py-2 text-[16px] rounded hover:bg-blue-50 {{ request()->routeIs('admin.pembayaran.index') ? 'text-blue-700 font-medium' : 'text-gray-600' }}">
-                            Tagihan
-                        </a>
-                        <a href="{{ route('admin.pembayaran.riwayat') }}"
-                            class="block px-4 py-2 text-[16px] rounded hover:bg-blue-50 {{ request()->routeIs('admin.pembayaran.riwayat') ? 'text-blue-700 font-medium' : 'text-gray-600' }}">
-                            Riwayat Pembayaran
-                        </a>
+                    <!-- Label MENU -->
+                    <div class=" pt-2 pb-2 text-xs text-gray-500 uppercase tracking-wider">
+                        MENU
                     </div>
-                </div>
 
-                <!-- Laporan -->
+                    <!-- Kamar -->
+                    <a href="{{ route('admin.kamar.index') }}"
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-[16px] font-semibold {{ request()->routeIs('kamar.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
+                        <i data-lucide="door-open" class="w-5 h-5"></i>
+                        Kamar
+                    </a>
+
+                    <!-- Penghuni -->
+                    <a href="{{ route('admin.penghuni.index') }}"
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-[16px] font-semibold {{ request()->routeIs('penghuni.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+                        Penghuni
+                    </a>
+
+                    <!-- Pembayaran -->
+                    <div x-data="{ open: {{ request()->routeIs('admin.pembayaran.*') ? 'true' : 'false' }} }" class="relative">
+                        <button @click="open = !open"
+                            class="w-full flex items-center justify-between px-4 py-2 rounded-lg hover:bg-blue-100 transition text-[16px] font-semibold {{ request()->routeIs('admin.pembayaran.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
+                            <span class="flex items-center gap-2">
+                                <i data-lucide="wallet" class="w-5 h-5"></i>
+                                Pembayaran
+                            </span>
+                            <i data-lucide="chevron-right" :class="{ 'rotate-90': open }"
+                                class="w-5 h-5 transform transition-transform"></i>
+                        </button>
+
+                        <div x-show="open" x-cloak x-transition class="mt-1 space-y-1">
+                            <a href="{{ route('admin.pembayaran.index') }}"
+                                class="block px-4 py-2 text-[16px] rounded hover:bg-blue-50 {{ request()->routeIs('admin.pembayaran.index') ? 'text-blue-700 font-medium' : 'text-gray-600' }}">
+                                Tagihan
+                            </a>
+                            <a href="{{ route('admin.pembayaran.riwayat') }}"
+                                class="block px-4 py-2 text-[16px] rounded hover:bg-blue-50 {{ request()->routeIs('admin.pembayaran.riwayat') ? 'text-blue-700 font-medium' : 'text-gray-600' }}">
+                                Riwayat Pembayaran
+                            </a>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- <!-- Laporan -->
                 <a href="{{ route('admin.laporan.index') }}"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-[16px] font-semibold {{ request()->routeIs('laporan.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
                     <i data-lucide="file-bar-chart" class="w-5 h-5"></i>
                     Laporan
-                </a>
+                </a> --}}
             </nav>
 
             <!-- Logout -->
@@ -124,7 +124,7 @@
             </div>
         </aside>
 
-        <main class="flex-1 p-6 bg-[#f1f5f9] overflow-y-auto">
+        <main class="flex-1 p-6 bg-[#f1f5f9] overflow-y-auto h-full">
             @if (isset($header))
                 <header class="mb-4">
                     <div class="text-2xl font-semibold text-gray-800">
