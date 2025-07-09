@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class DatabaseSeeder extends Seeder
+class Penghuniseeder extends Seeder
 {
     /**
      * Seed the application's database.
@@ -23,14 +23,14 @@ class DatabaseSeeder extends Seeder
         // ]);
         User::create(
             [
-                'name' => 'Admin Kost',
-                'email' => 'admin@example.com',
+                'name' => 'Penghuni 1',
+                'email' => 'penghuni1@example.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'), // Ganti dengan password yang aman
-                'role' => 'admin',
+                'password' => Hash::make('password'),
+                'role' => 'penghuni',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
+            ]
         );
     }
 }
