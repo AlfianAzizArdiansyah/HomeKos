@@ -44,10 +44,12 @@ class PembayaranController extends Controller
         $harga = $penghuni->kamar->harga ?? 0;
 
         Pembayaran::create([
-            'penghuni_id' => $penghuni->id,
-            'tanggal_bayar' => $request->tanggal_bayar,
-            'jumlah' => $harga,
-            'status' => $request->status,
+            'penghuni_id' => $request->penghuni_id,
+            'jumlah' => $request->jumlah,
+            'jatuh_tempo' => $request->jatuh_tempo,
+            'status' => 'belum lunas',
+            'tanggal_bayar' => null,
+            'nomor_kamar' => $penghuni->kamar->nama_kamar ?? '-',
         ]);
 
 

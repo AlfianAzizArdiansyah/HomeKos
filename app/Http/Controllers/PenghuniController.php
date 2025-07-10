@@ -23,7 +23,8 @@ class penghuniController extends Controller
             'no_hp' => 'required|string|max:15',
             'nik' => 'required|string|max:16',
             'foto_ktp' => 'required|image|max:2048',
-            'kamar_id' => 'nullable|exists:kamars,id'
+            'kamar_id' => 'nullable|exists:kamars,id',
+            'tanggal_masuk' => 'required|date',
         ]);
 
         $path = $request->file('foto_ktp')->store('ktp', 'public');
@@ -34,7 +35,9 @@ class penghuniController extends Controller
             'nik' => $request->nik,
             'foto_ktp' => $path,
             'kamar_id' => $request->kamar_id,
+            'tanggal_masuk' => $request->tanggal_masuk,
             'status' => 'aktif',
+            'user_id' => auth()->id(),
         ]);
 
         // Ubah status kamar jadi 'terisi' jika dipilih
@@ -51,7 +54,7 @@ class penghuniController extends Controller
         return view('admin.penghuni.create', compact('penghuni', 'kamars'));
     }
 
-    public function update(Request $request, penghuni $penghuni)
+    public function update(Request $request, Penghuni $penghuni)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
@@ -59,9 +62,10 @@ class penghuniController extends Controller
             'nik' => 'required|string|max:16',
             'status' => 'required|in:aktif,keluar',
             'kamar_id' => 'nullable|exists:kamars,id',
+            'tanggal_masuk' => 'required|date',
         ]);
 
-        $kamarLama = $penghuni->kamar_id; // simpan kamar sebelum diubah
+        $kamarLama = $penghuni->kamar_id;
 
         // Update foto jika ada
         if ($request->hasFile('foto_ktp')) {
@@ -71,23 +75,23 @@ class penghuniController extends Controller
             $penghuni->foto_ktp = $request->file('foto_ktp')->store('ktp', 'public');
         }
 
-        // Update data penghuni
         $penghuni->update([
             'nama' => $request->nama,
             'no_hp' => $request->no_hp,
             'nik' => $request->nik,
             'status' => $request->status,
             'kamar_id' => $request->kamar_id,
+            'tanggal_masuk' => $request->tanggal_masuk,
             'foto_ktp' => $penghuni->foto_ktp,
         ]);
 
-        // Update kamar lama (jika keluar atau pindah)
-        if ($kamarLama && ($request->status == 'keluar' || $kamarLama != $request->kamar_id)) {
+        // Jika pindah kamar atau keluar, kamar lama jadi tersedia
+        if ($kamarLama && ($request->status === 'keluar' || $request->kamar_id !== $kamarLama)) {
             Kamar::where('id', $kamarLama)->update(['status' => 'tersedia']);
         }
 
-        // Update kamar baru (jika masih aktif dan pilih kamar)
-        if ($request->kamar_id && $request->status == 'aktif') {
+        // Jika status aktif dan kamar baru ada, tandai sebagai 'terisi'
+        if ($request->status === 'aktif' && !is_null($request->kamar_id)) {
             Kamar::where('id', $request->kamar_id)->update(['status' => 'terisi']);
         }
 

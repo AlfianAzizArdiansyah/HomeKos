@@ -86,6 +86,15 @@
                 @endif
             </div>
 
+            <!-- Tanggal Masuk -->
+            <div>
+                <label for="edit_tanggal_masuk" class="block text-sm font-semibold text-gray-700 mb-1">Tanggal
+                    Masuk</label>
+                <input type="date" name="tanggal_masuk" id="edit_tanggal_masuk" x-model="penghuniData.tanggal_masuk"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    required>
+            </div>
+
             <!-- Status -->
             <div>
                 <label for="edit_status" class="block text-sm font-semibold text-gray-700 mb-1">Status</label>
