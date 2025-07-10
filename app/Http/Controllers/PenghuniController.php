@@ -3,42 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kamar;
-use App\Models\Penghuni;
+use App\Models\penghuni;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class PenghuniController extends Controller
+class penghuniController extends Controller
 {
     public function index()
     {
-        $penghunis = Penghuni::with('kamar')->paginate(10);
+        $penghunis = penghuni::with('kamar')->paginate(10);
         $kamars = Kamar::where('status', 'tersedia')->get();
         return view('admin.penghuni.index', compact('penghunis', 'kamars'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama' => 'required|string',
-            'no_hp' => 'required|string',
-            'nik' => 'required|string',
-            'foto_ktp' => 'required|image',
-            'tanggal_masuk' => 'required|date',
-            'kamar_id' => 'required|integer',
-            'status' => 'required|string',
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'no_hp' => 'required|string|max:15',
+            'nik' => 'required|string|max:16',
+            'foto_ktp' => 'required|image|max:2048',
+            'kamar_id' => 'nullable|exists:kamars,id'
         ]);
 
-        $validated['foto_ktp'] = $request->file('foto_ktp')->store('ktp', 'public');
-        $validated['user_id'] = auth()->id(); // atau ambil dari input jika user memilih user
+        $path = $request->file('foto_ktp')->store('ktp', 'public');
 
-        Penghuni::create($validated);
+        $penghuni = penghuni::create([
+            'nama' => $request->nama,
+            'no_hp' => $request->no_hp,
+            'nik' => $request->nik,
+            'foto_ktp' => $path,
+            'kamar_id' => $request->kamar_id,
+            'status' => 'aktif',
+        ]);
 
         // Ubah status kamar jadi 'terisi' jika dipilih
         if ($request->kamar_id) {
             Kamar::where('id', $request->kamar_id)->update(['status' => 'terisi']);
         }
 
-        return redirect()->route('admin.penghuni.index')->with('success', 'Data penghuni berhasil disimpan.');
+        return redirect()->route('admin.penghuni.index')->with('success', 'penghuni berhasil ditambahkan.');
     }
 
     public function edit(penghuni $penghuni)
@@ -54,7 +58,6 @@ class PenghuniController extends Controller
             'no_hp' => 'required|string|max:15',
             'nik' => 'required|string|max:16',
             'status' => 'required|in:aktif,keluar',
-            'tanggal_masuk' => 'required|date',
             'kamar_id' => 'nullable|exists:kamars,id',
         ]);
 
@@ -74,7 +77,6 @@ class PenghuniController extends Controller
             'no_hp' => $request->no_hp,
             'nik' => $request->nik,
             'status' => $request->status,
-            'tanggal_masuk' => $request->tanggal_masuk,
             'kamar_id' => $request->kamar_id,
             'foto_ktp' => $penghuni->foto_ktp,
         ]);
