@@ -7,6 +7,7 @@ use App\Models\Pembayaran;
 use App\Models\penghuni;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 
 class PembayaranController extends Controller
@@ -85,6 +86,36 @@ class PembayaranController extends Controller
         return $pdf->stream('struk_pembayaran_' . $pembayaran->id . '.pdf');
     }
 
+    public function riwayat()
+    {
+        $latestPayments = Pembayaran::select(DB::raw('MAX(id) as id'))
+            ->groupBy('penghuni_id');
+
+        $pembayarans = Pembayaran::with('penghuni.kamar')
+            ->whereIn('id', $latestPayments)
+            ->latest()
+            ->paginate(10);
+
+        return view('admin.pembayaran.riwayat', compact('pembayarans'));
+    }
+
+
+    public function riwayatBayar($id)
+    {
+        $pembayaran = Pembayaran::with('penghuni.kamar')->findOrFail($id);
+
+        // Ambil semua pembayaran milik penghuni tersebut
+        $semuaPembayaran = Pembayaran::with('details')
+            ->where('penghuni_id', $pembayaran->penghuni_id)
+            ->where('status', 'lunas')
+            ->orderBy('tanggal_bayar')
+            ->get();
+
+        return view('admin.pembayaran.riwayatbayar', [
+            'pembayaran' => $pembayaran,
+            'semuaPembayaran' => $semuaPembayaran,
+        ]);
+    }
 
     // public function export()
     // {

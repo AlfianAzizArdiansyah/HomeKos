@@ -118,8 +118,10 @@
         <!-- KOP -->
         <div class="kop">
             <h1>KOST ARI</h1>
-            <p>Jl. Kaliurang - Magelang No.123, Yogyakarta</p>
-            <p>Telp: 0857-1234-5678 | Email: kostari@example.com</p>
+            <p>Jl. Kaliurang, Kab Sleman, Daerah Istimewa Yogyakarta</p>
+            <p>
+                <center>Telp: 0857-1234-5678</center>
+            </p>
             <hr>
         </div>
 

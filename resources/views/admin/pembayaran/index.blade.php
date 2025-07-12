@@ -109,13 +109,7 @@
                             <td class="px-6 py-4">
                                 <div class="flex justify-center items-center gap-2">
                                     <button
-                                        @click="openEditPembayaran({
-                                                                                                                                            id: {{ $pembayaran->id }},
-                                                                                                                                            jumlah: {{ $pembayaran->jumlah }},
-                                                                                                                                            jatuh_tempo: '{{ $pembayaran->jatuh_tempo }}',
-                                                                                                                                            tanggal_bayar: '{{ $pembayaran->tanggal_bayar }}',
-                                                                                                                                            status: '{{ $pembayaran->status }}'
-                                                                                                                                        })"
+                                        @click="openEditPembayaran({id: {{ $pembayaran->id }}, jumlah: {{ $pembayaran->jumlah }}, jatuh_tempo: '{{ $pembayaran->jatuh_tempo }}',tanggal_bayar: '{{ $pembayaran->tanggal_bayar }}',status: '{{ $pembayaran->status }}'})"
                                         class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-5 py-2 rounded-md shadow">
                                         Edit
                                     </button>

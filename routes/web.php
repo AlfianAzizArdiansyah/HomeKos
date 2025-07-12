@@ -58,12 +58,13 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'role:admin'])->group(
     Route::put('/penghuni/{penghuni}', [PenghuniController::class, 'update'])->name('penghuni.update'); // sudah cukup, karena prefix admin
 
     // Pembayaran
-    Route::resource('pembayaran', PembayaranController::class);
+    Route::resource('pembayaran', PembayaranController::class)->except(['show']);
     Route::get('/pembayaran/riwayat', [PembayaranController::class, 'riwayat'])->name('pembayaran.riwayat');
     Route::get('/pembayaran/edit-custom', [PembayaranController::class, 'editCustom'])->name('pembayaran.editCustom');
 
     // Tagihan
     Route::get('/pembayaran/{id}/struk', [PembayaranController::class, 'cetak'])->name('pembayaran.struk');
+    Route::get('/pembayaran/{id}/riwayatbayar', [PembayaranController::class, 'riwayatBayar'])->name('pembayaran.riwayatbayar');
 
     // Laporan
     // Route::resource('laporan', LaporanController::class);
