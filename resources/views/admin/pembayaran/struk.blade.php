@@ -130,12 +130,12 @@
         <div class="details">
             <table>
                 <tr>
-                    <th>Nama Penyewa</th>
-                    <td>: {{ $pembayaran->penyewa->nama }}</td>
+                    <th>Nama Penghuni</th>
+                    <td>: {{ $pembayaran->penghuni->nama }}</td>
                 </tr>
                 <tr>
                     <th>Kamar</th>
-                    <td>: {{ $pembayaran->penyewa->kamar->nama_kamar ?? '-' }}</td>
+                    <td>: {{ $pembayaran->penghuni->kamar->nama_kamar ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th>Jumlah Tagihan</th>

@@ -81,7 +81,7 @@
             <table class="w-full border-collapse bg-white text-gray-800 text-lg text-center">
                 <thead class="bg-blue-200 text-blue-900 uppercase text-base font-bold tracking-wide">
                     <tr>
-                        <th class="px-6 py-4">Nama Penyewa</th>
+                        <th class="px-6 py-4">Nama penghuni</th>
                         <th class="px-6 py-4">Kamar</th>
                         <th class="px-6 py-4">Jumlah</th>
                         <th class="px-6 py-4">Jatuh Tempo</th>
@@ -93,8 +93,8 @@
                 <tbody>
                     @forelse ($pembayarans as $pembayaran)
                         <tr class="border-t hover:bg-blue-50 text-lg">
-                            <td class="px-6 py-4">{{ $pembayaran->penyewa->nama }}</td>
-                            <td class="px-6 py-4">{{ $pembayaran->penyewa->kamar->nama_kamar ?? '-' }}</td>
+                            <td class="px-6 py-4">{{ $pembayaran->penghuni->nama }}</td>
+                            <td class="px-6 py-4">{{ $pembayaran->penghuni->kamar->nama_kamar ?? '-' }}</td>
                             <td class="px-6 py-4">Rp {{ number_format($pembayaran->jumlah, 0, ',', '.') }}</td>
                             <td class="px-6 py-4">{{ \Carbon\Carbon::parse($pembayaran->jatuh_tempo)->format('d M Y') }}</td>
                             <td class="px-6 py-4">
@@ -108,13 +108,14 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex justify-center items-center gap-2">
-                                    <button @click="openEditPembayaran({
-                                                                                                            id: {{ $pembayaran->id }},
-                                                                                                            jumlah: {{ $pembayaran->jumlah }},
-                                                                                                            jatuh_tempo: '{{ $pembayaran->jatuh_tempo }}',
-                                                                                                            tanggal_bayar: '{{ $pembayaran->tanggal_bayar }}',
-                                                                                                            status: '{{ $pembayaran->status }}'
-                                                                                                        })"
+                                    <button
+                                        @click="openEditPembayaran({
+                                                                                                                                            id: {{ $pembayaran->id }},
+                                                                                                                                            jumlah: {{ $pembayaran->jumlah }},
+                                                                                                                                            jatuh_tempo: '{{ $pembayaran->jatuh_tempo }}',
+                                                                                                                                            tanggal_bayar: '{{ $pembayaran->tanggal_bayar }}',
+                                                                                                                                            status: '{{ $pembayaran->status }}'
+                                                                                                                                        })"
                                         class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-5 py-2 rounded-md shadow">
                                         Edit
                                     </button>
