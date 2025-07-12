@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Pembayaran;
-use App\Models\Penghuni;
+use App\Models\penghuni;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -14,7 +14,7 @@ class PembayaranController extends Controller
     public function index()
     {
         $pembayarans = Pembayaran::with('penghuni.kamar')->latest()->paginate(10);
-        $penghunis = Penghuni::with('kamar')->get()->map(function ($p) {
+        $penghunis = penghuni::with('kamar')->get()->map(function ($p) {
             return [
                 'id' => $p->id,
                 'nama' => $p->nama,
@@ -35,13 +35,11 @@ class PembayaranController extends Controller
     {
         $request->validate([
             'penghuni_id' => 'required|exists:penghunis,id',
-            'tanggal_bayar' => 'required|date',
-            'status' => 'required|in:lunas,belum lunas'
+            'jumlah' => 'required|numeric',
+            'jatuh_tempo' => 'required|date',
         ]);
 
-        $penghuni = Penghuni::with('kamar')->findOrFail($request->penghuni_id);
-
-        $harga = $penghuni->kamar->harga ?? 0;
+        $penghuni = penghuni::with('kamar')->findOrFail($request->penghuni_id);
 
         Pembayaran::create([
             'penghuni_id' => $request->penghuni_id,
@@ -49,11 +47,11 @@ class PembayaranController extends Controller
             'jatuh_tempo' => $request->jatuh_tempo,
             'status' => 'belum lunas',
             'tanggal_bayar' => null,
-            'nomor_kamar' => $penghuni->kamar->nama_kamar ?? '-',
+            //'nomor_kamar' => $penghuni->kamar->nama_kamar ?? '-', // ← otomatis isi
         ]);
 
 
-        return redirect()->route('admin.pembayaran.index')->with('success', 'Pembayaran berhasil dibuat.');
+        return redirect()->route('admin.pembayaran.index')->with('success', 'Tagihan berhasil dibuat.');
     }
 
     public function edit(Pembayaran $pembayaran)

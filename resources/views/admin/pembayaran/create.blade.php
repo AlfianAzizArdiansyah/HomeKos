@@ -1,12 +1,12 @@
 <!-- Modal Tambah Pembayaran -->
-<div x-show="tambahPembayaran" x-cloak x-data="{penghuniList: {{ Js::from($penghunis) }}, 
-    selectedId: '', 
-    harga: 0, 
-    updateHarga() { 
-        const selected =penghuniList.find(p => p.id == this.selectedId); 
-        this.harga = selected ? selected.kamar?.harga ?? 0 : 0;
-    }
-
+<div x-show="tambahPembayaran" x-cloak x-data="{
+      penghuniList: {{ Js::from($penghunis) }},
+      selectedId: '',
+      harga: 0,
+      updateHarga() {
+          const selected = this.penghuniList.find(p => p.id == this.selectedId);
+          this.harga = selected ? (selected.kamar?.harga ?? 0) : 0;
+      }
   }" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
   x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
   x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
@@ -36,7 +36,7 @@
           required>
           <option value="">-- Pilih penghuni --</option>
           <template x-for="penghuni in penghuniList" :key="penghuni.id">
-            <option :value="penghuni.id" x-text="penghuni.nama + ' penghuni.kamar?.nama_kamar ?? ' -') + ')'">
+            <option :value="penghuni.id" x-text="penghuni.nama + ' - Kamar ' + (penghuni.kamar?.nama_kamar ?? '-')">
             </option>
           </template>
         </select>
