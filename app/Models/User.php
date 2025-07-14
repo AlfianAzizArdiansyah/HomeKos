@@ -56,6 +56,6 @@ class User extends Authenticatable
 
     public function penghuni()
     {
-        return $this->hasMany(Penghuni::class);
+        return $this->hasOne(Penghuni::class);
     }
 }

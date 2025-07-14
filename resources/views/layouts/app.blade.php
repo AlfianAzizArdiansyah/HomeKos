@@ -79,6 +79,17 @@
                         </div>
                     </div>
                 @endif
+                @if (Auth::user()->role === 'penghuni')
+                    <a href="{{ route('penghuni.dashboard') }}"
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-lg font-bold {{ request()->routeIs('penghuni.dashboard') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        Dashboard
+                    </a>
+                    <a href="{{ route('penghuni.riwayat-bayar') }}" class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold {{ request()->routeIs('penghuni.riwayat-bayar') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
+                        <i data-lucide="history" class="w-5 h-5"></i>
+                        Riwayat Pembayaran
+                    </a>
+                @endif
 
                 {{-- <!-- Laporan -->
                 <a href="{{ route('admin.laporan.index') }}"
