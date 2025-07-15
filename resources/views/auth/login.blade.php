@@ -46,14 +46,14 @@
             </x-primary-button>
         </div>
 
-        <!-- Register link below form -->
+        {{-- <!-- Register link below form -->
         <div class="text-center mt-6 text-sm text-gray-600 dark:text-gray-400">
             Belum punya akun?
             <a href="{{ route('register') }}"
                 class="underline text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                 Daftar
             </a>
-        </div>
+        </div> --}}
 
     </form>
 </x-guest-layout>

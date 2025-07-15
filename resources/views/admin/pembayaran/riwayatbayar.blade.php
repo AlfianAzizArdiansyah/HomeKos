@@ -29,8 +29,9 @@
                             <td>{{ \Carbon\Carbon::parse($data->tanggal_bayar)->format('d M Y') }}</td>
                             <td>Rp {{ number_format($data->jumlah, 0, ',', '.') }}</td>
                             <td>
-                                @if($data->bukti_bayar)
-                                    <a href="{{ asset('storage/' . $data->bukti_bayar) }}" target="_blank">Lihat Bukti</a>
+                                @if ($data->bukti_bayar)
+                                    <a href="{{ asset('storage/bukti/' . $data->bukti_bayar) }}" target="_blank">
+                                        Lihat Bukti</a>
                                 @else
                                     -
                                 @endif

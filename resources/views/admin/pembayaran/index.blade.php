@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div x-data="{tambahPembayaran: false,editPembayaran: false,pembayaranData: {},openEditPembayaran(data) {this.pembayaranData = { ...data };this.editPembayaran = true;}}"
-        class="p-6 bg-white rounded-xl shadow-md">
+    <div x-data="{ tambahPembayaran: false, editPembayaran: false, pembayaranData: {}, openEditPembayaran(data) { this.pembayaranData = { ...data };
+            this.editPembayaran = true; } }" class="p-6 bg-white rounded-xl shadow-md">
 
         <!-- Judul & Tombol -->
         <div class="flex justify-between items-center mb-8">
@@ -78,7 +78,7 @@
 
         <!-- Tabel -->
         <div class="overflow-x-auto rounded-lg shadow mt-10">
-            <table class="w-full border-collapse bg-white text-gray-800 text-lg text-center">
+            <table class="w-full border-collapse bg-white text-gray-800 text-md text-center">
                 <thead class="bg-blue-200 text-blue-900 uppercase text-base font-bold tracking-wide">
                     <tr>
                         <th class="px-6 py-4">Nama penghuni</th>
@@ -92,41 +92,43 @@
                 </thead>
                 <tbody>
                     @forelse ($pembayarans as $pembayaran)
-                        <tr class="border-t hover:bg-blue-50 text-lg">
+                        <tr class="border-t hover:bg-blue-50 text-md">
                             <td class="px-6 py-4">{{ $pembayaran->penghuni->nama }}</td>
                             <td class="px-6 py-4">{{ $pembayaran->penghuni->kamar->nama_kamar ?? '-' }}</td>
                             <td class="px-6 py-4">Rp {{ number_format($pembayaran->jumlah, 0, ',', '.') }}</td>
-                            <td class="px-6 py-4">{{ \Carbon\Carbon::parse($pembayaran->jatuh_tempo)->format('d M Y') }}</td>
+                            <td class="px-6 py-4">{{ \Carbon\Carbon::parse($pembayaran->jatuh_tempo)->format('d M Y') }}
+                            </td>
                             <td class="px-6 py-4">
                                 {{ $pembayaran->tanggal_bayar ? \Carbon\Carbon::parse($pembayaran->tanggal_bayar)->format('d M Y') : '-' }}
                             </td>
                             <td class="px-6 py-4">
                                 <span
-                                    class="px-3 py-1 rounded-full text-sm font-semibold {{ $pembayaran->status === 'lunas' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
+                                    class="inline-block px-3 py-1 rounded-full text-sm font-semibold {{ $pembayaran->status === 'Lunas' ? 'bg-green-200 text-green-800' : ($pembayaran->status === 'Proses' ? 'bg-yellow-200 text-yellow-800' : 'bg-red-200 text-red-800') }}">
                                     {{ ucfirst($pembayaran->status) }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4">
-                                <div class="flex justify-center items-center gap-2">
-                                    <button
-                                        @click="openEditPembayaran({id: {{ $pembayaran->id }}, jumlah: {{ $pembayaran->jumlah }}, jatuh_tempo: '{{ $pembayaran->jatuh_tempo }}',tanggal_bayar: '{{ $pembayaran->tanggal_bayar }}',status: '{{ $pembayaran->status }}'})"
-                                        class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-5 py-2 rounded-md shadow">
-                                        Edit
-                                    </button>
-                                    <form action="{{ route('admin.pembayaran.destroy', $pembayaran) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus pembayaran ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="bg-red-600 hover:bg-red-700 text-white text-sm px-5 py-2 rounded-md shadow">
-                                            Hapus
+                            <td class="px-6
+                                    py-4">
+                                    <div class="flex justify-center items-center gap-2">
+                                        <button
+                                            @click="openEditPembayaran({id: {{ $pembayaran->id }}, jumlah: {{ $pembayaran->jumlah }}, jatuh_tempo: '{{ $pembayaran->jatuh_tempo }}',tanggal_bayar: '{{ $pembayaran->tanggal_bayar }}',status: '{{ $pembayaran->status }}'})"
+                                            class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-5 py-2 rounded-md shadow">
+                                            Edit
                                         </button>
-                                    </form>
-                                    <a href="{{ route('admin.pembayaran.struk', $pembayaran->id) }}" target="_blank"
-                                        class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm px-5 py-2 rounded-md shadow">
-                                        Cetak Struk
-                                    </a>
-                                </div>
+                                        <form action="{{ route('admin.pembayaran.destroy', $pembayaran) }}" method="POST"
+                                            onsubmit="return confirm('Yakin ingin menghapus pembayaran ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="bg-red-600 hover:bg-red-700 text-white text-sm px-5 py-2 rounded-md shadow">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                        <a href="{{ route('admin.pembayaran.struk', $pembayaran->id) }}" target="_blank"
+                                            class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm px-5 py-2 rounded-md shadow">
+                                            Cetak Struk
+                                        </a>
+                                    </div>
                             </td>
                         </tr>
                     @empty

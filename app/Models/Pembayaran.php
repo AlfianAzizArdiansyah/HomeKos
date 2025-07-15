@@ -8,16 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Pembayaran extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'nomor_kamar', 'penghuni_id', 'tanggal_bayar', 'jatuh_tempo', 'jumlah', 'status'];
+    protected $fillable = ['penghuni_id', 'tanggal_bayar', 'jatuh_tempo', 'jumlah', 'status', 'bukti_bayar'];
 
     public function penghuni()
     {
         return $this->belongsTo(Penghuni::class);
     }
-
-    public function details()
-    {
-        return $this->hasMany(PembayaranDetail::class, 'pembayaran_id');
-    }
-
 }

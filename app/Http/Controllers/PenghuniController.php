@@ -4,48 +4,61 @@ namespace App\Http\Controllers;
 
 use App\Models\Kamar;
 use App\Models\penghuni;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class penghuniController extends Controller
 {
     public function index()
     {
-        $penghunis = penghuni::with('kamar')->paginate(10);
+        $penghunis = penghuni::with(['kamar', 'user'])->paginate(10);
         $kamars = Kamar::where('status', 'tersedia')->get();
         return view('admin.penghuni.index', compact('penghunis', 'kamars'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'no_hp' => 'required|string|max:15',
-            'nik' => 'required|string|max:16',
-            'foto_ktp' => 'required|image|max:2048',
-            'kamar_id' => 'nullable|exists:kamars,id',
+            // 'email' => 'required|email|unique:users,email',
+            // 'password' => 'required|string|min:6',
+            'no_hp' => 'required|string|max:20',
+            'nik' => 'required|string|max:20',
+            'foto_ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'tanggal_masuk' => 'required|date',
+            'kamar_id' => 'nullable|exists:kamars,id',
+            'status' => 'required|in:aktif,keluar',
         ]);
 
-        $path = $request->file('foto_ktp')->store('ktp', 'public');
 
-        $penghuni = penghuni::create([
-            'nama' => $request->nama,
-            'no_hp' => $request->no_hp,
-            'nik' => $request->nik,
-            'foto_ktp' => $path,
-            'kamar_id' => $request->kamar_id,
-            'tanggal_masuk' => $request->tanggal_masuk,
-            'status' => 'aktif',
-            'user_id' => auth()->id(),
+        // Simpan user terlebih dahulu
+        $user = User::create([
+            'name' => $validated['nama'],
+            'email' => strtolower(str_replace(' ', '', $validated['nama'])) . rand(100, 999) . '@homekost.com', // email dummy unik
+            'password' => Hash::make('password'), // password default
+            // 'email' => $validated['email'],
+            // 'password' => Hash::make($validated['password']),
+            'role' => 'penghuni',
         ]);
 
-        // Ubah status kamar jadi 'terisi' jika dipilih
-        if ($request->kamar_id) {
-            Kamar::where('id', $request->kamar_id)->update(['status' => 'terisi']);
-        }
+        // Simpan foto ktp
+        $ktpPath = $request->file('foto_ktp')->store('ktp', 'public');
 
-        return redirect()->route('admin.penghuni.index')->with('success', 'penghuni berhasil ditambahkan.');
+        // Simpan penghuni
+        $penghuni = Penghuni::create([
+            'user_id' => $user->id,
+            'nama' => $validated['nama'],
+            'no_hp' => $validated['no_hp'],
+            'nik' => $validated['nik'],
+            'foto_ktp' => $ktpPath,
+            'tanggal_masuk' => $validated['tanggal_masuk'],
+            'kamar_id' => $validated['kamar_id'],
+            'status' => $validated['status'],
+        ]);
+
+        return redirect()->back()->with('success', 'Penghuni berhasil ditambahkan.');
     }
 
     public function edit(penghuni $penghuni)

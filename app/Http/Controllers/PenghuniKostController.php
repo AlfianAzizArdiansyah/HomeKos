@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kamar;
 use App\Models\Pembayaran;
+use App\Models\PembayaranDetail;
 use App\Models\Penghuni;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,21 +17,72 @@ class PenghuniKostController extends Controller
     {
 
         $user = Auth::user();
-        $penghuni = Penghuni::where('user_id', Auth::id())->first(); 
+        $penghuni = Penghuni::with('kamar')->where('user_id', Auth::id())->first();
+
+        if (!$penghuni) {
+            return redirect()->back()->with('error', 'Data penghuni tidak ditemukan.');
+        }
+
         $kamar = $penghuni->kamar;
 
-        // Ambil pembayaran 3 bulan terakhir
-        $pembayaranBulanIni = $penghuni->pembayarans()
-            ->orderBy('tanggal_bayar', 'desc') // jika memakai kolom periode
-            ->take(3)
+        $pembayarans = Pembayaran::where('penghuni_id', auth()->user()->penghuni->id)
+            ->orderBy('jatuh_tempo', 'asc')
             ->get();
 
-        return view('penghuni.dashboard', compact('penghuni', 'kamar', 'pembayaranBulanIni'));
+        $tagihan = Pembayaran::where('penghuni_id', $penghuni->id)
+            ->orderBy('jatuh_tempo', 'desc')
+            ->get();
+
+        return view('penghuni.dashboard', compact('penghuni', 'kamar', 'tagihan'));
     }
 
-    public function historyPay() {
-        return view('penghuni.riwayat-bayar');
+    public function historyPay()
+    {
+        $user = Auth::user();
+        $penghuni = Penghuni::with('kamar')->where('user_id', $user->id)->first();
+
+        if (!$penghuni) {
+            return redirect()->back()->with('error', 'Data penghuni tidak ditemukan.');
+        }
+
+        // Riwayat pembayaran (status lunas saja)
+        $riwayatPembayaran = Pembayaran::where('penghuni_id', $penghuni->id)
+            ->where('status', 'Lunas')
+            ->orderBy('tanggal_bayar', 'desc')
+            ->get();
+
+        return view('penghuni.riwayat-bayar', [
+            'riwayatPembayaran' => $riwayatPembayaran,
+        ]);
     }
+
+    public function unggahBukti(Request $request, $id)
+    {
+        $request->validate([
+            'bukti_bayar' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        $pembayaranDetail = Pembayaran::findOrFail($id);
+        
+        // Hapus bukti lama jika ada
+        if ($pembayaranDetail->bukti_bayar) {
+            Storage::delete('public/bukti/' . $pembayaranDetail->bukti_bayar);
+        }
+
+        // Simpan file baru
+        $file = $request->file('bukti_bayar');
+        $filename = uniqid() . '_' . time() . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('public/bukti', $filename);
+
+        $pembayaranDetail->update([
+            'bukti_bayar' => $filename,
+            'tanggal_bayar' => now(),
+            'status' => 'Proses',
+        ]);
+
+        return back()->with('success', 'Bukti pembayaran berhasil diunggah.');
+    }
+
 
 
     // public function storePengaduan(Request $request)
