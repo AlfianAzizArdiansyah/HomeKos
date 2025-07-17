@@ -24,6 +24,7 @@
                     <tr>
                         <th class="px-6 py-4">Kamar</th>
                         <th class="px-6 py-4">Nama</th>
+                        <th class="px-6 py-4">Email</th>
                         <th class="px-6 py-4">No HP</th>                        
                         <th class="px-6 py-4">Tanggal Masuk</th>                        
                         <th class="px-6 py-4">Status</th>
@@ -36,6 +37,7 @@
                         <tr class="border-t hover:bg-blue-50 text-lg">
                             <td class="px-6 py-4">{{ $penghuni->kamar->nama_kamar ?? '—' }}</td>
                             <td class="px-6 py-4">{{ $penghuni->nama }}</td>
+                            <td class="px-6 py-4">{{ $penghuni->user->email ?? '-' }}</td>
                             <td class="px-6 py-4">{{ $penghuni->no_hp }}</td>
                             <td class="px-6 py-4">{{ $penghuni->tanggal_masuk }}</td>
                             <td class="px-6 py-4">

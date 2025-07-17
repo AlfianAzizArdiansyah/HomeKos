@@ -14,7 +14,7 @@ class PembayaranController extends Controller
 {
     public function index()
     {
-        $pembayarans = Pembayaran::with('penghuni.kamar')->latest()->paginate(10);
+        $pembayarans = Pembayaran::with('penghuni.kamar')->whereIn('status', ['Proses', 'Belum Lunas'])->latest()->paginate(10);
         $penghunis = penghuni::with('kamar')->get()->map(function ($p) {
             return [
                 'id' => $p->id,
@@ -46,7 +46,7 @@ class PembayaranController extends Controller
             'penghuni_id' => $request->penghuni_id,
             'jumlah' => $request->jumlah,
             'jatuh_tempo' => $request->jatuh_tempo,
-            'status' => 'belum lunas',
+            'status' => 'Belum Lunas',
             'tanggal_bayar' => null,
             //'nomor_kamar' => $penghuni->kamar->nama_kamar ?? '-', // ← otomatis isi
         ]);
@@ -57,7 +57,7 @@ class PembayaranController extends Controller
 
     public function edit(Pembayaran $pembayaran)
     {
-        $penghunis = penghuni::all();
+        $penghunis = Penghuni::all();
         return view('admin.pembayaran.edit', compact('pembayaran', 'penghunis'));
     }
 
@@ -66,7 +66,7 @@ class PembayaranController extends Controller
         $request->validate([
             'tanggal_bayar' => 'required|date',
             'jumlah' => 'required|numeric',
-            'status' => 'required|in:lunas,belum lunas'
+            'status' => 'required|in:Lunas, Proses, Belum Lunas'
         ]);
 
         $pembayaran->update($request->all());
@@ -105,9 +105,8 @@ class PembayaranController extends Controller
         $pembayaran = Pembayaran::with('penghuni.kamar')->findOrFail($id);
 
         // Ambil semua pembayaran milik penghuni tersebut
-        $semuaPembayaran = Pembayaran::with('details')
-            ->where('penghuni_id', $pembayaran->penghuni_id)
-            ->where('status', 'lunas')
+        $semuaPembayaran = Pembayaran::where('penghuni_id', $pembayaran->penghuni_id)
+            ->where('status', 'Lunas')
             ->orderBy('tanggal_bayar')
             ->get();
 

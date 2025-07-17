@@ -30,9 +30,6 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-Route::post('register', [RegisteredUserController::class, 'store']);
-
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
@@ -76,6 +73,8 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'role:admin'])->group(
 // Untuk penghuni
 Route::prefix('penghuni')->as('penghuni.')->middleware(['auth', 'role:penghuni'])->group(function () {
     Route::get('/dashboard', [PenghuniKostController::class, 'index'])->name('dashboard');
+    Route::get('/riwayat-pembayaran', [PenghuniKostController::class, 'historyPay'])->name('riwayat-bayar');
+    Route::post('/bukti-bayar/unggah/{id}', [PenghuniKostController::class, 'unggahBukti'])->name('bukti-bayar');
     Route::post('/pengaduan', [PenghuniKostController::class, 'storePengaduan'])->name('pengaduan.store');
     Route::put('/update', [PenghuniKostController::class, 'update'])->name('update');
     Route::post('/chat/send', [PenghuniKostController::class, 'sendChat'])->name('chat.send');

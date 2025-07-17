@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('penghuni_id')->constrained()->onDelete('cascade');
-            $table->date('tanggal_bayar');
+            $table->date('tanggal_bayar')->nullable();
             $table->integer('jumlah');
-            $table->enum('status', ['lunas', 'belum lunas']);
+            $table->date('jatuh_tempo')->nullable();
+            $table->enum('status', ['Lunas', 'Proses','Belum Lunas']);
+            $table->string('bukti_bayar')->nullable();
             $table->timestamps();
         });
+    
     }
 
     /**
