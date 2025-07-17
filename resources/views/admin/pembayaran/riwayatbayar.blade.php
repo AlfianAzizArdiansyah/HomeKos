@@ -30,8 +30,8 @@
                             <td>Rp {{ number_format($data->jumlah, 0, ',', '.') }}</td>
                             <td>
                                 @if ($data->bukti_bayar)
-                                    <a href="{{ asset('storage/bukti/' . $data->bukti_bayar) }}" target="_blank">
-                                        Lihat Bukti</a>
+                                    <a href="{{ asset('storage/bukti/' . $data->bukti_bayar) }}" target="_blank"
+                                        class="text-blue-600 hover:underline">Lihat Bukti</a>
                                 @else
                                     -
                                 @endif

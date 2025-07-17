@@ -14,7 +14,7 @@ class PembayaranController extends Controller
 {
     public function index()
     {
-        $pembayarans = Pembayaran::with('penghuni.kamar')->whereIn('status', ['Proses', 'Belum Lunas'])->latest()->paginate(10);
+        $pembayarans = Pembayaran::with('penghuni.kamar')->whereIn('status', ['Proses', 'Belum Lunas', 'Lunas'])->latest()->paginate(10);
         $penghunis = penghuni::with('kamar')->get()->map(function ($p) {
             return [
                 'id' => $p->id,
@@ -63,13 +63,27 @@ class PembayaranController extends Controller
 
     public function update(Request $request, Pembayaran $pembayaran)
     {
+
         $request->validate([
-            'tanggal_bayar' => 'required|date',
+            'tanggal_bayar' => 'required_if:status,Lunas|nullable|date',
             'jumlah' => 'required|numeric',
-            'status' => 'required|in:Lunas, Proses, Belum Lunas'
+            'status' => 'required|in:Lunas,Proses,Belum Lunas',
         ]);
 
-        $pembayaran->update($request->all());
+        $data = [
+            'jumlah' => $request->jumlah,
+            'status' => $request->status,
+        ];
+
+        // Jika status Lunas, simpan tanggal_bayar
+        if ($request->status == 'Lunas') {
+            $data['tanggal_bayar'] = $request->tanggal_bayar ?? now()->format('Y-m-d');
+        } else {
+            $data['tanggal_bayar'] = null; // Reset jika tidak lunas
+        }
+
+        $pembayaran->update($data);
+
         return redirect()->route('admin.pembayaran.index')->with('success', 'Data pembayaran diperbarui.');
     }
 
