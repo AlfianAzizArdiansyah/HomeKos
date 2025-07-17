@@ -2,9 +2,9 @@
     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
     x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
     x-transition:leave-end="opacity-0 scale-90"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
 
-    <div x-on:click.away="tambahPenghuni = false" class="relative bg-white rounded-2xl shadow-2xl w-full max-w-xl p-6">
+    <div x-on:click.away="tambahPenghuni = false" class="relative bg-white rounded-2xl shadow-2xl w-full max-w-xl py-6 px-6 overflow-auto max-h-[90vh]">
 
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">

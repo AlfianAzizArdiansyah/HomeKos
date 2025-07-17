@@ -30,6 +30,7 @@ class PenghuniKostController extends Controller
             ->get();
 
         $tagihan = Pembayaran::where('penghuni_id', $penghuni->id)
+            ->where('status', '!=', 'Lunas')
             ->orderBy('jatuh_tempo', 'desc')
             ->get();
 

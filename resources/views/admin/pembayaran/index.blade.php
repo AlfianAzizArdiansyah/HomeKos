@@ -1,8 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <div x-data="{ tambahPembayaran: false, editPembayaran: false, pembayaranData: {}, openEditPembayaran(data) { this.pembayaranData = { ...data };this.editPembayaran = true; } }"
-        class="p-6 bg-white rounded-xl shadow-md">
+    <div x-data="{
+        tambahPembayaran: false,
+        editPembayaran: false,
+        pembayaranData: {},
+        openEditPembayaran(data) {
+            this.pembayaranData = { ...data };
+            this.editPembayaran = true;
+        }
+    }" class="p-6 bg-white rounded-xl shadow-md">
 
         <!-- Judul & Tombol -->
         <div class="flex justify-between items-center mb-8">
@@ -124,18 +131,20 @@
                                         class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-5 py-2 rounded-md shadow">
                                         Edit
                                     </button>
-                                    <form action="{{ route('admin.pembayaran.destroy', $pembayaran) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus pembayaran ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="bg-red-600 hover:bg-red-700 text-white text-sm px-5 py-2 rounded-md shadow">
-                                            Hapus
-                                        </button>
-                                    </form>
+                                    <div x-data="{ openDeleteModal: false }" x-cloak>
+                                        <!-- Button untuk membuka modal Tambah Kelas -->
+                                        <button type="button"
+                                            class="bg-red-600 hover:bg-red-700 text-white text-sm px-5 py-2 rounded-md shadow"
+                                            @click="openDeleteModal = true">Hapus</button>
+                                        @include('form.hapus-modal', [
+                                            'actionUrl' => route('admin.pembayaran.destroy', $pembayaran),
+                                            'modalTitle' => 'Hapus Tagihan',
+                                            'itemName' => "tagihan pembayaran {$pembayaran->penghuni->nama}",
+                                        ])
+                                    </div>
                                     <a href="{{ route('admin.pembayaran.struk', $pembayaran->id) }}" target="_blank"
                                         class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm px-5 py-2 rounded-md shadow">
-                                        Struk
+                                        Cetak Struk
                                     </a>
                                 </div>
                             </td>
