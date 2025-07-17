@@ -58,6 +58,10 @@ class penghuniController extends Controller
             'status' => $validated['status'],
         ]);
 
+        if ($request->kamar_id && $request->status === 'aktif') {
+            Kamar::where('id', $request->kamar_id)->update(['status' => 'terisi']);
+        }
+
         return redirect()->back()->with('success', 'Penghuni berhasil ditambahkan.');
     }
 
