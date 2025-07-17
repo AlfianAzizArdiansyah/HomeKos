@@ -25,8 +25,8 @@
                         <th class="px-6 py-4">Kamar</th>
                         <th class="px-6 py-4">Nama</th>
                         <th class="px-6 py-4">Email</th>
-                        <th class="px-6 py-4">No HP</th>                        
-                        <th class="px-6 py-4">Tanggal Masuk</th>                        
+                        <th class="px-6 py-4">No HP</th>
+                        <th class="px-6 py-4">Tanggal Masuk</th>
                         <th class="px-6 py-4">Status</th>
                         <th class="px-6 py-4">KTP</th>
                         <th class="px-6 py-4">Aksi</th>
@@ -59,19 +59,22 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex justify-center items-center gap-2">
-                                    <button type="button" @click="editPenghuni = true; penghuniData = @js($penghuni)"
+                                    <button type="button"
+                                        @click="editPenghuni = true; penghuniData = @js($penghuni)"
                                         class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-5 py-2 rounded-md shadow">
                                         Edit
                                     </button>
-                                    <form method="POST" action="{{ route('admin.penghuni.destroy', $penghuni) }}"
-                                        onsubmit="return confirm('Apakah kamu yakin ingin menghapus data ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="bg-red-600 hover:bg-red-700 text-white text-sm px-5 py-2 rounded-md shadow">
-                                            Hapus
-                                        </button>
-                                    </form>
+                                    <div x-data="{ openDeleteModal: false }" x-cloak>
+                                        <!-- Button untuk membuka modal Tambah Kelas -->
+                                        <button type="button"
+                                            class="bg-red-600 hover:bg-red-700 text-white text-sm px-5 py-2 rounded-md shadow"
+                                            @click="openDeleteModal = true">Hapus</button>
+                                        @include('form.hapus-modal', [
+                                            'actionUrl' => route('admin.penghuni.destroy', $penghuni),
+                                            'modalTitle' => 'Hapus Data Penghuni',
+                                            'itemName' => $penghuni->nama,
+                                        ])
+                                    </div>
 
                                     <!-- Tombol WhatsApp -->
                                     @php
@@ -79,7 +82,8 @@
                                         $pesanWA = "Halo $penghuni->nama, saya dari admin kos. Ingin menghubungi terkait tagihan kost bulan ini.";
                                     @endphp
 
-                                    <a href="https://wa.me/{{ $nomorWA }}?text={{ urlencode($pesanWA) }}" target="_blank"
+                                    <a href="https://wa.me/{{ $nomorWA }}?text={{ urlencode($pesanWA) }}"
+                                        target="_blank"
                                         class="bg-green-500 hover:bg-green-600 text-white text-sm px-5 py-2 rounded-md shadow flex items-center gap-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor"
                                             viewBox="0 0 24 24">

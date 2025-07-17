@@ -53,26 +53,30 @@
                                 Rp{{ number_format($kamar->harga, 0, ',', '.') }}
                             </td>
 
-                            <td class="px-6 py-4 space-x-2">
+
+                            <td class="px-6 py-4 inline-flex gap-2">
                                 <button @click="editKamar = true; kamarData = {{ $kamar->toJson() }}"
                                     class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-5 py-2 rounded-md shadow">
                                     Edit
                                 </button>
 
-                                <form method="POST" action="{{ route('admin.kamar.destroy', $kamar) }}" class="inline"
-                                    onsubmit="return confirm('Apakah kamu yakin ingin menghapus data ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-600 hover:bg-red-700 text-white text-sm px-5 py-2 rounded-md shadow">
-                                        Hapus
-                                    </button>
-                                </form>
+                                <div x-data="{ openDeleteModal: false }" x-cloak>
+                                    <!-- Button untuk membuka modal Tambah Kelas -->
+                                    <button type="button"
+                                        class="bg-red-600 hover:bg-red-700 text-white text-sm px-5 py-2 rounded-md shadow"
+                                        @click="openDeleteModal = true">Hapus</button>
+                                    @include('form.hapus-modal', [
+                                        'actionUrl' => route('admin.kamar.destroy', $kamar),
+                                        'modalTitle' => 'Hapus Kamar',
+                                        'itemName' => $kamar->nama_kamar,
+                                    ])
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center px-6 py-6 text-gray-500 text-lg">Belum ada data kamar.</td>
+                            <td colspan="5" class="text-center px-6 py-6 text-gray-500 text-lg">Belum ada data kamar.
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
