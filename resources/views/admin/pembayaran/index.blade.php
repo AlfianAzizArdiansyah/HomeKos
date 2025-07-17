@@ -68,8 +68,9 @@
                         <label class="block font-semibold text-gray-700 mb-1">Status</label>
                         <select name="status" x-model="pembayaranData.status"
                             class="w-full px-4 py-2 border border-indigo-300 rounded-lg focus:ring-indigo-500">
-                            <option value="belum bayar">Belum Bayar</option>
-                            <option value="lunas">Lunas</option>
+                            <option value="Belum Bayar">Belum Bayar</option>
+                            <option value="Proses">Proses</option>
+                            <option value="Lunas">Lunas</option>
                         </select>
                     </div>
 
@@ -94,6 +95,7 @@
                         <th class="px-6 py-4">Jatuh Tempo</th>
                         <th class="px-6 py-4">Tanggal Bayar</th>
                         <th class="px-6 py-4">Status</th>
+                        <th class="px-6 py-4">Bukti Bayar</th>
                         <th class="px-6 py-4">Aksi</th>
                     </tr>
                 </thead>
@@ -114,8 +116,15 @@
                                     {{ ucfirst($pembayaran->status) }}
                                 </span>
                             </td>
-                            <td class="px-6
-                                    py-4">
+                            <td class="px-6 py-4">
+                                @if ($pembayaran->bukti_bayar)
+                                    <a href="{{ asset('storage/bukti/' . $pembayaran->bukti_bayar) }}" target="_blank"
+                                        class="text-blue-600 hover:underline">Lihat Bukti</a>
+                                @else
+                                    <span class="text-gray-400 italic">-</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4">
                                 <div class="flex justify-center items-center gap-2">
                                     <button
                                         @click="openEditPembayaran({id: {{ $pembayaran->id }}, jumlah: {{ $pembayaran->jumlah }}, jatuh_tempo: '{{ $pembayaran->jatuh_tempo }}',tanggal_bayar: '{{ $pembayaran->tanggal_bayar }}',status: '{{ $pembayaran->status }}'})"
