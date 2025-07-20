@@ -23,6 +23,7 @@ use App\Http\Controllers\PesananController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PenghuniController;
 use App\Http\Controllers\PenghuniKostController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 
 // Redirect default ke login
@@ -63,6 +64,9 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'role:admin'])->group(
     Route::get('/pembayaran/{id}/struk', [PembayaranController::class, 'cetak'])->name('pembayaran.struk');
     Route::get('/pembayaran/{id}/riwayatbayar', [PembayaranController::class, 'riwayatBayar'])->name('pembayaran.riwayatbayar');
 
+    Route::get('/profil', [ProfileController::class, 'index'])->name('profil');
+
+
     // Laporan
     // Route::resource('laporan', LaporanController::class);
 
@@ -75,7 +79,6 @@ Route::prefix('penghuni')->as('penghuni.')->middleware(['auth', 'role:penghuni']
     Route::get('/dashboard', [PenghuniKostController::class, 'index'])->name('dashboard');
     Route::get('/riwayat-pembayaran', [PenghuniKostController::class, 'historyPay'])->name('riwayat-bayar');
     Route::post('/bukti-bayar/unggah/{id}', [PenghuniKostController::class, 'unggahBukti'])->name('bukti-bayar');
-    Route::post('/pengaduan', [PenghuniKostController::class, 'storePengaduan'])->name('pengaduan.store');
-    Route::put('/update', [PenghuniKostController::class, 'update'])->name('update');
-    Route::post('/chat/send', [PenghuniKostController::class, 'sendChat'])->name('chat.send');
+    Route::get('/profil', [ProfileController::class, 'index'])->name('profil');
+    Route::get('/update-password', [ProfileController::class, 'updatePassword'])->name('update-password');
 });

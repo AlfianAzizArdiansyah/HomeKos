@@ -15,6 +15,19 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+    public function index()
+    {
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $admin = $user->admin;
+            return view('admin.profile.edit', compact('user', 'admin'));
+        } elseif ($user->role === 'penghuni') {
+            $penghuni = $user->penghuni;
+            return view('penghuni.profil', compact('user', 'penghuni'));
+        }
+    }
+
     public function edit(Request $request): View
     {
         return view('admin.profile.edit', [
@@ -57,5 +70,10 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function updatePassword()
+    {
+        return view('penghuni.update-password');
     }
 }
