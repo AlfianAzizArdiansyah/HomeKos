@@ -8,7 +8,7 @@ use App\Models\penghuni;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
-
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PembayaranController extends Controller
 {
@@ -128,6 +128,12 @@ class PembayaranController extends Controller
             'pembayaran' => $pembayaran,
             'semuaPembayaran' => $semuaPembayaran,
         ]);
+    }
+
+    public function showTransfer($id)
+    {
+        $pembayaran = Pembayaran::findOrFail($id);
+        return view('penghuni.transfer', compact('pembayaran'));
     }
 
     // public function export()

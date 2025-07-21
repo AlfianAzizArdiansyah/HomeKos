@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div x-data="{ openUnggahBukti: false, selectedId: null }">
+    <div x-data="{ openUnggahBukti: false, openBayar: false, selectedId: null, jumlahPembayaran: 0 }">
 
         <h1 class="text-2xl font-bold mb-6">Selamat datang, {{ Auth::user()->name }}</h1>
 
@@ -65,8 +65,7 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <span
-                                            class="px-2 py-1 rounded text-white
-                                        {{ $item->status == 'Lunas' ? 'bg-green-500' : ($item->status == 'Proses' ? 'bg-yellow-500' : 'bg-red-500') }}">
+                                            class="px-2 py-1 rounded text-white {{ $item->status == 'Lunas' ? 'bg-green-500' : ($item->status == 'Proses' ? 'bg-yellow-500' : 'bg-red-500') }}">
                                             {{ ucfirst($item->status) }}
                                         </span>
 
@@ -85,12 +84,18 @@
                                         @endif
                                     </td>
 
-                                    <td class="px-4 py-3">
-                                        <!-- Tombol Buka Modal -->
+                                    <td class="px-4 py-3 space-x-2">
+                                        <!-- Tombol Unggah Bukti -->
                                         <button @click="openUnggahBukti = true; selectedId = {{ $item->id }}"
-                                            class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm px-4 py-2 rounded shadow">
+                                            class="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded shadow transition duration-200">
                                             Unggah Bukti
                                         </button>
+
+                                        <!-- Tombol Bayar -->
+                                        <a href="{{ route('penghuni.transfer', $item->id) }}"
+                                            class="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded shadow transition duration-200">
+                                            Bayar
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -108,7 +113,8 @@
             <!-- Modal Upload Bukti -->
             <div x-show="openUnggahBukti" x-cloak x-transition
                 class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                <div @click.away="openUnggahBukti = false" class="bg-white p-6 rounded-lg w-full max-w-md shadow-lg text-left">
+                <div @click.away="openUnggahBukti = false"
+                    class="bg-white p-6 rounded-lg w-full max-w-md shadow-lg text-left">
                     <h2 class="text-xl font-bold mb-4">Unggah Bukti Pembayaran</h2>
                     <form :action="`{{ route('penghuni.bukti-bayar', ':id') }}`.replace(':id', selectedId)" method="POST"
                         enctype="multipart/form-data">
@@ -128,6 +134,23 @@
                     </form>
                 </div>
             </div>
+            <!-- Modal -->
+            <div x-show="openBayar" class="fixed z-50 inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div class="bg-white p-6 rounded-lg shadow-md w-96">
+                    <h2 class="text-lg font-semibold mb-4">Scan QR untuk Pembayaran</h2>
+
+                    <div class="flex justify-center mb-4">
+                        <img :src="`/generate-qr/${selectedId}`" alt="QR Code" class="w-48 h-48">
+                    </div>
+
+                    <p class="text-gray-600 text-sm mb-4">Setelah transfer, silakan unggah bukti pembayaran.</p>
+                    <button @click="openBayar = false"
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm px-4 py-2 rounded shadow transition duration-200">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+
         </div>
     </div>
 @endsection

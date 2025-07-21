@@ -25,6 +25,9 @@ use App\Http\Controllers\PenghuniController;
 use App\Http\Controllers\PenghuniKostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Pembayaran;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 // Redirect default ke login
 Route::get('/', function () {
@@ -81,4 +84,6 @@ Route::prefix('penghuni')->as('penghuni.')->middleware(['auth', 'role:penghuni']
     Route::post('/bukti-bayar/unggah/{id}', [PenghuniKostController::class, 'unggahBukti'])->name('bukti-bayar');
     Route::get('/profil', [ProfileController::class, 'index'])->name('profil');
     Route::get('/update-password', [ProfileController::class, 'updatePassword'])->name('update-password');
+    Route::get('/transfer/{id}', [PembayaranController::class, 'showTransfer'])->name('transfer');
+
 });
