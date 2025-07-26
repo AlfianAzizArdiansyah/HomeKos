@@ -62,6 +62,8 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'role:admin'])->group(
     Route::resource('pembayaran', PembayaranController::class)->except(['show']);
     Route::get('/pembayaran/riwayat', [PembayaranController::class, 'riwayat'])->name('pembayaran.riwayat');
     Route::get('/pembayaran/edit-custom', [PembayaranController::class, 'editCustom'])->name('pembayaran.editCustom');
+    Route::get('/pembayaran/{pembayaran}/edit', [PembayaranController::class, 'edit'])->name('admin.pembayaran.edit');
+
 
     // Tagihan
     Route::get('/pembayaran/{id}/struk', [PembayaranController::class, 'cetak'])->name('pembayaran.struk');

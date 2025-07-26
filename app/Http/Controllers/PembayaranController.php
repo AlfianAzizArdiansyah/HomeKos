@@ -63,23 +63,23 @@ class PembayaranController extends Controller
 
     public function update(Request $request, Pembayaran $pembayaran)
     {
-
         $request->validate([
             'tanggal_bayar' => 'required_if:status,Lunas|nullable|date',
             'jumlah' => 'required|numeric',
             'status' => 'required|in:Lunas,Proses,Belum Lunas',
+            'jatuh_tempo' => 'required|date',
         ]);
 
         $data = [
             'jumlah' => $request->jumlah,
             'status' => $request->status,
+            'jatuh_tempo' => $request->jatuh_tempo,
         ];
 
-        // Jika status Lunas, simpan tanggal_bayar
         if ($request->status == 'Lunas') {
             $data['tanggal_bayar'] = $request->tanggal_bayar ?? now()->format('Y-m-d');
         } else {
-            $data['tanggal_bayar'] = null; // Reset jika tidak lunas
+            $data['tanggal_bayar'] = null;
         }
 
         $pembayaran->update($data);
