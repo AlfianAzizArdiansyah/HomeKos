@@ -9,9 +9,10 @@
                     <option>2025</option>
                     <!-- Tambahkan tahun lainnya jika perlu -->
                 </select>
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md">
+                <a href="{{ route('penghuni.pembayaran.cetak-pdf') }}" target="_blank"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md">
                     Unduh PDF
-                </button>
+                </a>
             </div>
         </div>
 

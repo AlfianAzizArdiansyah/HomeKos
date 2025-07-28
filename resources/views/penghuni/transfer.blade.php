@@ -15,11 +15,15 @@
                 <tbody>
                     <tr class="border-b border-gray-200">
                         <td class="py-2 font-semibold w-1/3">Bank</td>
-                        <td class="py-2">: BRI</td>
+                        <td class="py-2">:
+                            <span class="text-lg font-bold tracking-wide text-gray-900">BRI</span>
+                        </td>
                     </tr>
                     <tr class="border-b border-gray-200">
                         <td class="py-2 font-semibold">Nama Penerima</td>
-                        <td class="py-2">: HomeKos</td>
+                        <td class="py-2">:
+                            <span class="text-lg font-bold tracking-wide text-gray-900">ARI SETIAWAN ALI</span>
+                        </td>
                     </tr>
                     <tr class="border-b border-gray-200">
                         <td class="py-2 font-semibold">No. Rekening</td>

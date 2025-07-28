@@ -87,5 +87,6 @@ Route::prefix('penghuni')->as('penghuni.')->middleware(['auth', 'role:penghuni']
     Route::get('/profil', [ProfileController::class, 'index'])->name('profil');
     Route::get('/update-password', [ProfileController::class, 'updatePassword'])->name('update-password');
     Route::get('/transfer/{id}', [PembayaranController::class, 'showTransfer'])->name('transfer');
+    Route::get('/penghuni/riwayat-bayar/cetak-pdf', [PembayaranController::class, 'cetakPDF'])->name('pembayaran.cetak-pdf');
 
 });

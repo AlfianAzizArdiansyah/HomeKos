@@ -113,7 +113,6 @@ class PembayaranController extends Controller
         return view('admin.pembayaran.riwayat', compact('pembayarans'));
     }
 
-
     public function riwayatBayar($id)
     {
         $pembayaran = Pembayaran::with('penghuni.kamar')->findOrFail($id);
@@ -134,6 +133,14 @@ class PembayaranController extends Controller
     {
         $pembayaran = Pembayaran::findOrFail($id);
         return view('penghuni.transfer', compact('pembayaran'));
+    }
+
+    public function cetakPDF()
+    {
+        $riwayatPembayaran = Pembayaran::with('penghuni.kamar')->orderBy('tanggal_bayar', 'desc')->get();
+
+        return Pdf::loadView('penghuni.cetak-pdf', compact('riwayatPembayaran'))
+            ->download('riwayat_pembayaran.pdf');
     }
 
     // public function export()
