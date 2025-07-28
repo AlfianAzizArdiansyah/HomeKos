@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
         // ]);
         User::create(
             [
-                'name' => 'Admin Kost',
-                'email' => 'admin@example.com',
+                'name' => 'Owner Kost',
+                'email' => 'homekos25@gmail.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'), // Ganti dengan password yang aman
                 'role' => 'admin',

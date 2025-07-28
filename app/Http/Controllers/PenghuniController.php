@@ -36,7 +36,7 @@ class penghuniController extends Controller
         // Simpan user terlebih dahulu
         $user = User::create([
             'name' => $validated['nama'],
-            'email' => strtolower(str_replace(' ', '', $validated['nama'])) . rand(100, 999) . '@homekost.com', // email dummy unik
+            'email' => strtolower(str_replace(' ', '', $validated['nama'])) . rand(100, 999) . '@gmail.com', // email dummy unik
             'password' => Hash::make('password'), // password default
             // 'email' => $validated['email'],
             // 'password' => Hash::make($validated['password']),
