@@ -46,7 +46,7 @@
                     required value="{{ old('nama', $penghuni->nama ?? '') }}">
             </div>
 
-            {{-- <!-- Email -->
+             <!-- Email -->
             <div>
                 <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
                 <input type="email" name="email" id="email" placeholder="email@example.com"
@@ -55,12 +55,12 @@
             </div>
 
             <!-- Password -->
-            <div>
+            <!-- <div>
                 <label for="password" class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
                 <input type="password" name="password" id="password" placeholder="Password"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     required>
-            </div> --}}
+            </div>  -->
 
             <!-- No HP -->
             <div>

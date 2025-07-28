@@ -22,7 +22,7 @@ class penghuniController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            // 'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email',
             // 'password' => 'required|string|min:6',
             'no_hp' => 'required|string|max:20',
             'nik' => 'required|string|max:20',
@@ -36,9 +36,9 @@ class penghuniController extends Controller
         // Simpan user terlebih dahulu
         $user = User::create([
             'name' => $validated['nama'],
-            'email' => strtolower(str_replace(' ', '', $validated['nama'])) . rand(100, 999) . '@gmail.com', // email dummy unik
+            //'email' => strtolower(str_replace(' ', '', $validated['nama'])) . rand(100, 999) . '@gmail.com', // email dummy unik
             'password' => Hash::make('password'), // password default
-            // 'email' => $validated['email'],
+            'email' => $validated['email'],
             // 'password' => Hash::make($validated['password']),
             'role' => 'penghuni',
         ]);
