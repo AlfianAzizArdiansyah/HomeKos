@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
         User::create(
             [
                 'name' => 'Owner Kost',
-                'email' => 'homekos25@gmail.com',
+                'email' => 'homekost33@gmail.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'), // Ganti dengan password yang aman
+                'password' => Hash::make('Kosku33'), // Ganti dengan password yang aman
                 'role' => 'admin',
                 'created_at' => now(),
                 'updated_at' => now(),
