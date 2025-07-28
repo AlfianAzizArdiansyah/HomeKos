@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Owner Kost',
                 'email' => 'homekost33@gmail.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('Kosku33'), // Ganti dengan password yang aman
+                'password' => Hash::make('Kosku123'), // Ganti dengan password yang aman
                 'role' => 'admin',
                 'created_at' => now(),
                 'updated_at' => now(),

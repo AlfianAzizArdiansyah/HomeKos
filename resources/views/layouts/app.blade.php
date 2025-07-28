@@ -56,7 +56,8 @@
                     </a>
 
                     <!-- Pembayaran -->
-                    <div x-data="{ open: {{ request()->routeIs('admin.pembayaran.*') ? 'true' : 'false' }} }" class="relative">
+                    <div x-data="{ open: {{ request()->routeIs('admin.pembayaran.*') ? 'true' : 'false' }} }"
+                        class="relative">
                         <button @click="open = !open"
                             class="w-full flex items-center justify-between px-4 py-2 rounded-lg hover:bg-blue-100 transition text-[16px] font-semibold {{ request()->routeIs('admin.pembayaran.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
                             <span class="flex items-center gap-2">
@@ -105,7 +106,7 @@
                         <i data-lucide="user" class="w-5 h-5"></i>
                         Profil
                     </a> --}}
-                    
+
                 @endif
 
                 {{-- <!-- Laporan -->
