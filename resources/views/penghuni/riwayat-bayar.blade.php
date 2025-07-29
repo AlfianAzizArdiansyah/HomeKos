@@ -45,7 +45,7 @@
                                 <td>Rp {{ number_format($data->jumlah, 0, ',', '.') }}</td>
                                 <td>
                                     @if ($data->bukti_bayar)
-                                        <a href="{{ asset('storage/' . $data->bukti_bayar) }}" target="_blank"
+                                        <a href="{{ asset('storage/bukti/' . $data->bukti_bayar) }}" target="_blank"
                                             class="text-blue-600 underline">
                                             Lihat Bukti</a>
                                     @else
