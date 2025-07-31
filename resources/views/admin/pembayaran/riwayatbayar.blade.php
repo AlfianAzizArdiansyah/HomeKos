@@ -31,7 +31,7 @@
                             <td>
                                 @if ($data->bukti_bayar)
                                     <a href="{{ asset('storage/bukti/' . $data->bukti_bayar) }}" target="_blank"
-                                        class="text-blue-600 hover:underline">Lihat Bukti</a>
+                                        class=" text-blue-600 hover:underline">Lihat Bukti</a>
                                 @else
                                     -
                                 @endif

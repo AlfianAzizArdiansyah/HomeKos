@@ -25,7 +25,7 @@
                             <td class="px-6 py-4">{{ $pembayaran->penghuni->kamar->nama_kamar ?? '-' }}</td>
                             <td class="px-6 py-4">Rp {{ number_format($pembayaran->jumlah, 0, ',', '.') }}</td>
                             <td class="px-6 py-4">
-                                <a href="{{ route('admin.pembayaran.riwayatbayar', $pembayaran->id) }}" target="_blank"
+                                <a href="{{ route('admin.pembayaran.riwayatbayar', $pembayaran->id) }}"
                                     class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm px-5 py-2 rounded-md shadow">
                                     Daftar bayar bulanan
                                 </a>
