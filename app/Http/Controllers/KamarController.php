@@ -25,13 +25,14 @@ class KamarController extends Controller
             'nama_kamar' => 'required|string|max:255',
             'status' => 'required|in:tersedia,terisi',
             'harga' => 'required|numeric|min:0',
+            'fasilitas' => 'nullable|array',
         ]);
 
         Kamar::create([
             'nama_kamar' => $request->nama_kamar,
             'status' => $request->status ?? 'tersedia',
-            'fasilitas' => $request->fasilitas,
             'harga' => $request->harga,
+            'fasilitas' => $validated['fasilitas'] ?? [],
         ]);
 
         return redirect()->route('admin.kamar.index')->with('success', 'Kamar berhasil ditambahkan.');

@@ -53,14 +53,15 @@
                        class="w-full px-4 py-2 rounded-lg border border-blue-300 bg-white text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm">
             </div>
 
-            <!-- Fasilitas -->
+          <!-- Fasilitas -->
             <div class="mb-6">
                 <label class="block text-base font-semibold text-gray-700 mb-2">Fasilitas</label>
                 <div class="grid grid-cols-2 gap-2">
                     @php
                         $selectedFasilitas = old('fasilitas', []);
+                        $listFasilitas = ['AC', 'Kamar Mandi Dalam', 'WiFi', 'Kasur', 'Lemari', 'Meja'];
                     @endphp
-                    @foreach (['AC', 'Kamar Mandi Dalam', 'WiFi', 'Kasur', 'Lemari', 'Meja'] as $item)
+                    @foreach ($listFasilitas as $item)
                         <label class="flex items-center space-x-2 text-gray-700 text-sm">
                             <input type="checkbox" name="fasilitas[]" value="{{ $item }}"
                                    class="rounded text-blue-600 border-blue-300 focus:ring-blue-500"
