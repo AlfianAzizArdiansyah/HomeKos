@@ -1,13 +1,6 @@
 <!-- Modal Tambah Pembayaran -->
-<div x-show="tambahPembayaran" x-cloak x-data="{
-      penghuniList: {{ Js::from($penghunis) }},
-      selectedId: '',
-      harga: 0,
-      updateHarga() {
-          const selected = this.penghuniList.find(p => p.id == this.selectedId);
-          this.harga = selected ? (selected.kamar?.harga ?? 0) : 0;
-      }
-  }" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+<div x-show="tambahPembayaran" x-cloak x-data="tambahPembayaranModal()"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
   x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
   x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
   x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
@@ -29,21 +22,21 @@
     <form action="{{ route('admin.pembayaran.store') }}" method="POST">
       @csrf
 
-      <!-- penghuni -->
+      <!-- Penghuni -->
       <div class="mb-4">
-        <label class="block font-semibold mb-1">penghuni</label>
+        <label class="block font-semibold mb-1">Penghuni</label>
         <select name="penghuni_id" x-model="selectedId" @change="updateHarga()" class="w-full border rounded px-4 py-2"
           required>
           <option value="">-- Pilih penghuni --</option>
           <template x-for="penghuni in penghuniList" :key="penghuni.id">
-            <option :value="penghuni.id" x-text="penghuni.nama + ' - Kamar ' + (penghuni.kamar?.nama_kamar ?? '-')">
+            <option :value="penghuni.id" x-text="penghuni.nama + ' - ' + (penghuni.kamar?.nama_kamar ?? '-')">
             </option>
           </template>
         </select>
       </div>
 
       <!-- Jumlah Pembayaran Otomatis -->
-      <div class=" mb-4">
+      <div class="mb-4">
         <label class="block font-semibold mb-1">Jumlah Tagihan</label>
         <input type="number" name="jumlah" x-model="harga"
           class="w-full border rounded px-4 py-2 bg-gray-100 cursor-not-allowed" readonly required>
@@ -52,8 +45,8 @@
       <!-- Jatuh Tempo -->
       <div class="mb-5">
         <label class="block font-semibold text-gray-700 mb-1">Jatuh Tempo</label>
-        <input type="date" name="jatuh_tempo"
-          class="w-full px-4 py-2 border border-blue-300 rounded-lg focus:ring-blue-500" required>
+        <input type="date" name="jatuh_tempo" x-model="jatuhTempo"
+          class="w-full px-4 py-2 bg-gray-100 border border-blue-300 rounded-lg cursor-not-allowed" readonly required>
       </div>
 
       <!-- Tombol -->
@@ -66,3 +59,39 @@
     </form>
   </div>
 </div>
+
+<script>
+  function tambahPembayaranModal() {
+    return {
+      penghuniList: @json($penghunis),
+      selectedId: '',
+      harga: 0,
+      jatuhTempo: '',
+      updateHarga() {
+        const selected = this.penghuniList.find(p => p.id == this.selectedId);
+        this.harga = selected ? (selected.kamar?.harga ?? 0) : 0;
+
+        let baseDate = null;
+
+        if (selected?.pembayaran_terakhir?.jatuh_tempo) {
+          baseDate = new Date(selected.pembayaran_terakhir.jatuh_tempo);
+        } else if (selected?.tanggal_masuk) {
+          baseDate = new Date(selected.tanggal_masuk);
+        }
+
+        if (baseDate) {
+          const originalDate = baseDate.getDate();
+          baseDate.setMonth(baseDate.getMonth() + 1);
+
+          if (baseDate.getDate() !== originalDate) {
+            baseDate.setDate(0);
+          }
+
+          this.jatuhTempo = baseDate.toISOString().split('T')[0];
+        } else {
+          this.jatuhTempo = '';
+        }
+      }
+    }
+  }
+</script>

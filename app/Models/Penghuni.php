@@ -24,4 +24,10 @@ class Penghuni extends Model
     {
         return $this->hasMany(Pembayaran::class);
     }
+
+    public function jatuhTempo()
+    {
+        return $this->hasOne(Pembayaran::class)->latestOfMany();
+    }
+
 }

@@ -2,28 +2,34 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Pembayaran;
-use App\Models\penghuni;
+use App\Models\Penghuni;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Auth;
 
 class PembayaranController extends Controller
 {
     public function index()
     {
-        $pembayarans = Pembayaran::with('penghuni.kamar')->whereIn('status', ['Proses', 'Belum Lunas', 'Lunas'])->latest()->paginate(10);
-        $penghunis = penghuni::with('kamar')->get()->map(function ($p) {
+        $pembayarans = Pembayaran::with('penghuni.kamar')
+            ->whereIn('status', ['Proses', 'Belum Lunas', 'Lunas'])
+            ->latest()
+            ->paginate(10);
+
+        $penghunis = Penghuni::with(['kamar', 'jatuhTempo'])->get()->map(function ($p) {
             return [
                 'id' => $p->id,
                 'nama' => $p->nama,
+                'tanggal_masuk' => $p->tanggal_masuk,
                 'kamar' => [
                     'nama_kamar' => $p->kamar->nama_kamar ?? '-',
                     'harga' => $p->kamar->harga ?? 0,
                 ],
+                'pembayaran_terakhir' => $p->jatuhTempo ? [
+                    'jatuh_tempo' => $p->jatuhTempo->jatuh_tempo,
+                ] : null,
             ];
         });
 
@@ -41,17 +47,12 @@ class PembayaranController extends Controller
             'jatuh_tempo' => 'required|date',
         ]);
 
-        $penghuni = penghuni::with('kamar')->findOrFail($request->penghuni_id);
-
         Pembayaran::create([
             'penghuni_id' => $request->penghuni_id,
             'jumlah' => $request->jumlah,
-            'jatuh_tempo' => $request->jatuh_tempo,
             'status' => 'Belum Lunas',
-            'tanggal_bayar' => null,
-            //'nomor_kamar' => $penghuni->kamar->nama_kamar ?? '-', // ← otomatis isi
+            'jatuh_tempo' => $request->jatuh_tempo,
         ]);
-
 
         return redirect()->route('admin.pembayaran.index')->with('success', 'Tagihan berhasil dibuat.');
     }
@@ -77,11 +78,9 @@ class PembayaranController extends Controller
             'jatuh_tempo' => $request->jatuh_tempo,
         ];
 
-        if ($request->status == 'Lunas') {
-            $data['tanggal_bayar'] = $request->tanggal_bayar ?? now()->format('Y-m-d');
-        } else {
-            $data['tanggal_bayar'] = null;
-        }
+        $data['tanggal_bayar'] = $request->status === 'Lunas'
+            ? ($request->tanggal_bayar ?? now()->format('Y-m-d'))
+            : null;
 
         $pembayaran->update($data);
 
@@ -119,7 +118,6 @@ class PembayaranController extends Controller
     {
         $pembayaran = Pembayaran::with('penghuni.kamar')->findOrFail($id);
 
-        // Ambil semua pembayaran milik penghuni tersebut
         $semuaPembayaran = Pembayaran::where('penghuni_id', $pembayaran->penghuni_id)
             ->where('status', 'Lunas')
             ->orderBy('tanggal_bayar')
@@ -151,9 +149,4 @@ class PembayaranController extends Controller
 
         return Pdf::loadView('penghuni.cetak-pdf', compact('riwayatPembayaran'))->stream('riwayat_pembayaran.pdf');
     }
-
-    // public function export()
-    // {
-    //     return Excel::download(new TransaksiExport, 'transaksi.xlsx');
-    // }
 }
