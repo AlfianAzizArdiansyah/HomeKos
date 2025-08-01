@@ -91,7 +91,7 @@
                                         </button>
 
                                         <!-- Tombol Bayar -->
-                                        <a href="{{ route('penghuni.transfer', $item->id) }}"
+                                        <a href="{{ route('penghuni.pembayaran.transfer', $item->id) }}"
                                             class="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded shadow transition duration-200">
                                             Bayar
                                         </a>

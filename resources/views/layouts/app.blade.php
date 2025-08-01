@@ -96,7 +96,7 @@
                     </a>
 
                     <!-- Riwayat bayar -->
-                    <a href="{{ route('penghuni.riwayat-bayar') }}"
+                    <a href="{{ route('penghuni.pembayaran.riwayat-bayar') }}"
                         class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold {{ request()->routeIs('penghuni.riwayat-bayar') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
                         <i data-lucide="history" class="w-5 h-5"></i>
                         Riwayat Pembayaran
@@ -110,7 +110,7 @@
                     </a>
 
                     <!-- Update Password -->
-                    <a href="{{ route('penghuni.update-password') }}"
+                    <a href="{{ route('penghuni.password.update-password') }}"
                         class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold {{ request()->routeIs('penghuni.update-password') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
                         <i data-lucide="lock-keyhole" class="w-5 h-5"></i>
                         Update Password
@@ -118,12 +118,14 @@
 
                     <!-- Hubungi Admin via WhatsApp -->
                     @php
-                        $nomorWA = preg_replace('/^0/', '62', '085643358281'); // Ganti dengan nomor admin
-                        $pesanWA = '';
+
+                        $nomorWA = preg_replace('/^0/', '62', '085876014181'); // Ganti dengan nomor admin
+                        $pesanWA = "";
+
                     @endphp
 
                     <a href="https://wa.me/{{ $nomorWA }}?text={{ urlencode($pesanWA) }}" target="_blank"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-green-100 text-md font-bold text-gray-700">
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold">
                         <i data-lucide="message-circle" class="w-5 h-5"></i>
                         Hubungi Admin
                     </a>
