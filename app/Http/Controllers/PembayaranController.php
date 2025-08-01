@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Auth;
 
 class PembayaranController extends Controller
 {
@@ -93,11 +94,12 @@ class PembayaranController extends Controller
         return redirect()->route('admin.pembayaran.index')->with('success', 'Data pembayaran dihapus.');
     }
 
-    public function cetak($id)
+    public function cetakInvoice($id)
     {
         $pembayaran = Pembayaran::with('penghuni.kamar')->findOrFail($id);
-        $pdf = Pdf::loadView('admin.pembayaran.struk', compact('pembayaran'));
-        return $pdf->stream('struk_pembayaran_' . $pembayaran->id . '.pdf');
+
+        return Pdf::loadView('penghuni.invoice', compact('pembayaran'))
+            ->stream('invoice-' . $pembayaran->id . '.pdf');
     }
 
     public function riwayat()
@@ -137,10 +139,17 @@ class PembayaranController extends Controller
 
     public function cetakPDF()
     {
-        $riwayatPembayaran = Pembayaran::with('penghuni.kamar')->orderBy('tanggal_bayar', 'desc')->get();
+        $userId = Auth::id();
 
-        return Pdf::loadView('penghuni.cetak-pdf', compact('riwayatPembayaran'))
-            ->download('riwayat_pembayaran.pdf');
+        $riwayatPembayaran = Pembayaran::with('penghuni.kamar')
+            ->where('status', 'Lunas')
+            ->whereHas('penghuni', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->orderBy('tanggal_bayar', 'desc')
+            ->get();
+
+        return Pdf::loadView('penghuni.cetak-pdf', compact('riwayatPembayaran'))->stream('riwayat_pembayaran.pdf');
     }
 
     // public function export()

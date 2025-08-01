@@ -14,4 +14,9 @@ class Pembayaran extends Model
     {
         return $this->belongsTo(Penghuni::class);
     }
+
+    public function kamar()
+    {
+        return $this->hasOneThrough(Kamar::class, Penghuni::class, 'id', 'id', 'penghuni_id', 'kamar_id');
+    }
 }

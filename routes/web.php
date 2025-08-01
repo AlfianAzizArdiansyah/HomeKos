@@ -66,7 +66,6 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'role:admin'])->group(
 
 
     // Tagihan
-    Route::get('/pembayaran/{id}/struk', [PembayaranController::class, 'cetak'])->name('pembayaran.struk');
     Route::get('/pembayaran/{id}/riwayatbayar', [PembayaranController::class, 'riwayatBayar'])->name('pembayaran.riwayatbayar');
 
     Route::get('/profil', [ProfileController::class, 'index'])->name('profil');
@@ -87,6 +86,7 @@ Route::prefix('penghuni')->as('penghuni.')->middleware(['auth', 'role:penghuni']
     Route::get('/profil', [ProfileController::class, 'index'])->name('profil');
     Route::get('/update-password', [ProfileController::class, 'updatePassword'])->name('update-password');
     Route::get('/transfer/{id}', [PembayaranController::class, 'showTransfer'])->name('transfer');
-    Route::get('/penghuni/riwayat-bayar/cetak-pdf', [PembayaranController::class, 'cetakPDF'])->name('pembayaran.cetak-pdf');
+    Route::get('/pembayaran/cetak-pdf', [PembayaranController::class, 'cetakPDF'])->name('pembayaran.cetak-pdf');
+    Route::get('/penghuni/invoice/{id}', [PembayaranController::class, 'cetakInvoice'])->name('invoice');
 
 });

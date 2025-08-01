@@ -37,7 +37,6 @@
                 </div>
             </div>
 
-
             <!-- Tagihan Pembayaran -->
             <div class="bg-white rounded-lg shadow p-6">
                 <h2 class="text-xl font-semibold mb-6">Tagihan Pembayaran</h2>
@@ -110,6 +109,7 @@
                     </table>
                 </div>
             </div>
+
             <!-- Modal Upload Bukti -->
             <div x-show="openUnggahBukti" x-cloak x-transition
                 class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -134,23 +134,6 @@
                     </form>
                 </div>
             </div>
-            <!-- Modal -->
-            <div x-show="openBayar" class="fixed z-50 inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <div class="bg-white p-6 rounded-lg shadow-md w-96">
-                    <h2 class="text-lg font-semibold mb-4">Scan QR untuk Pembayaran</h2>
-
-                    <div class="flex justify-center mb-4">
-                        <img :src="`/generate-qr/${selectedId}`" alt="QR Code" class="w-48 h-48">
-                    </div>
-
-                    <p class="text-gray-600 text-sm mb-4">Setelah transfer, silakan unggah bukti pembayaran.</p>
-                    <button @click="openBayar = false"
-                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm px-4 py-2 rounded shadow transition duration-200">
-                        Tutup
-                    </button>
-                </div>
-            </div>
-
         </div>
     </div>
 @endsection
