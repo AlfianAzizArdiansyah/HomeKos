@@ -34,7 +34,7 @@ class PenghuniKostController extends Controller
             ->orderBy('jatuh_tempo', 'desc')
             ->get();
 
-        return view('penghuni.dashboard', compact('penghuni', 'kamar', 'tagihan'));
+        return view('penghuni.dashboard.dashboard', compact('penghuni', 'kamar', 'tagihan'));
     }
 
     public function historyPay()
@@ -52,7 +52,7 @@ class PenghuniKostController extends Controller
             ->orderBy('tanggal_bayar', 'desc')
             ->get();
 
-        return view('penghuni.riwayat-bayar', [
+        return view('penghuni.pembayaran.riwayat-bayar', [
             'riwayatPembayaran' => $riwayatPembayaran,
         ]);
     }
@@ -64,7 +64,7 @@ class PenghuniKostController extends Controller
         ]);
 
         $pembayaranDetail = Pembayaran::findOrFail($id);
-        
+
         // Hapus bukti lama jika ada
         if ($pembayaranDetail->bukti_bayar) {
             Storage::delete('public/bukti/' . $pembayaranDetail->bukti_bayar);
