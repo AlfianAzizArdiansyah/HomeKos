@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminPengaduanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,7 @@ use App\Http\Controllers\KamarController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PenghuniController;
 use App\Http\Controllers\PenghuniKostController;
 use App\Http\Controllers\ProfileController;
@@ -69,6 +71,11 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'role:admin'])->group(
 
     Route::get('/profil', [ProfileController::class, 'index'])->name('profil');
 
+    // pengaduan
+    Route::resource('pengaduan', AdminPengaduanController::class);
+
+
+
 
     // Laporan
     // Route::resource('laporan', LaporanController::class);
@@ -80,12 +87,15 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'role:admin'])->group(
 // Untuk penghuni
 Route::prefix('penghuni')->as('penghuni.')->middleware(['auth', 'role:penghuni'])->group(function () {
     Route::get('/dashboard', [PenghuniKostController::class, 'index'])->name('dashboard');
-    Route::get('/penghuni/riwayat-pembayaran', [PenghuniKostController::class, 'historyPay'])->name('pembayaran.riwayat-bayar');
-    Route::post('/penghuni/bukti-bayar/unggah/{id}', [PenghuniKostController::class, 'unggahBukti'])->name('bukti-bayar');
-    Route::get('/penghuni/profil', [ProfileController::class, 'index'])->name('profil');
-    Route::get('/penghuni/password/update-password', [ProfileController::class, 'updatePassword'])->name('password.update-password');
-    Route::get('/penghuni/pembayaran/transfer/{id}', [PembayaranController::class, 'showTransfer'])->name('pembayaran.transfer');
-    Route::get('/penghuni/pembayaran/cetak-pdf', [PembayaranController::class, 'cetakPDF'])->name('pembayaran.cetak-pdf');
-    Route::get('/penghuni/pembayaran/invoice/{id}', [PembayaranController::class, 'cetakInvoice'])->name('pembayaran.invoice');
+    Route::get('/riwayat-pembayaran', [PenghuniKostController::class, 'historyPay'])->name('pembayaran.riwayat-bayar');
+    Route::post('/bukti-bayar/unggah/{id}', [PenghuniKostController::class, 'unggahBukti'])->name('bukti-bayar');
+    Route::get('/profil', [ProfileController::class, 'index'])->name('profil');
+    Route::get('/update-password', [ProfileController::class, 'updatePassword'])->name('password.update-password');
+    Route::get('/transfer/{id}', [PembayaranController::class, 'showTransfer'])->name('pembayaran.transfer');
+    Route::get('/pembayaran/cetak-pdf', [PembayaranController::class, 'cetakPDF'])->name('pembayaran.cetak-pdf');
+    Route::get('/penghuni/invoice/{id}', [PembayaranController::class, 'cetakInvoice'])->name('pembayaran.invoice');
+    Route::get('/pengaduan', [PengaduanController::class, 'index'])->name('pengaduan.index');
+    Route::post('/pengaduan', [PengaduanController::class, 'store'])->name('pengaduan.store');
+
 
 });
