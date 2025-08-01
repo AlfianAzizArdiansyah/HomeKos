@@ -56,7 +56,6 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'role:admin'])->group(
 
     // Manajemen Penghuni
     Route::resource('penghuni', PenghuniController::class);
-    Route::put('/penghuni/{penghuni}', [PenghuniController::class, 'update'])->name('penghuni.update'); // sudah cukup, karena prefix admin
 
     // Pembayaran
     Route::resource('pembayaran', PembayaranController::class)->except(['show']);
