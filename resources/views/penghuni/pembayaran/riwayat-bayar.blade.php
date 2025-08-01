@@ -51,7 +51,7 @@
                                 </td>
 
                                 <td>
-                                    <a href="{{ route('penghuni.invoice', $data->id) }}" target="_blank"
+                                    <a href="{{ route('penghuni.pembayaran.invoice', $data->id) }}" target="_blank"
                                         class="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1 rounded-md shadow inline-flex items-center justify-center"
                                         title="Download Invoice">
                                         <!-- Ikon Download -->

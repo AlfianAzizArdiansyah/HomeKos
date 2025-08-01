@@ -97,7 +97,7 @@ class PembayaranController extends Controller
     {
         $pembayaran = Pembayaran::with('penghuni.kamar')->findOrFail($id);
 
-        return Pdf::loadView('penghuni.invoice', compact('pembayaran'))
+        return Pdf::loadView('penghuni.pembayaran.invoice', compact('pembayaran'))
             ->stream('invoice-' . $pembayaran->id . '.pdf');
     }
 
@@ -132,7 +132,7 @@ class PembayaranController extends Controller
     public function showTransfer($id)
     {
         $pembayaran = Pembayaran::findOrFail($id);
-        return view('penghuni.transfer', compact('pembayaran'));
+        return view('penghuni.pembayaran.transfer', compact('pembayaran'));
     }
 
     public function cetakPDF()
@@ -147,6 +147,6 @@ class PembayaranController extends Controller
             ->orderBy('tanggal_bayar', 'desc')
             ->get();
 
-        return Pdf::loadView('penghuni.cetak-pdf', compact('riwayatPembayaran'))->stream('riwayat_pembayaran.pdf');
+        return Pdf::loadView('penghuni.pembayaran.cetak-pdf', compact('riwayatPembayaran'))->stream('riwayat_pembayaran.pdf');
     }
 }

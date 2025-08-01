@@ -74,6 +74,6 @@ class ProfileController extends Controller
 
     public function updatePassword()
     {
-        return view('penghuni.update-password');
+        return view('penghuni.password.update-password');
     }
 }
