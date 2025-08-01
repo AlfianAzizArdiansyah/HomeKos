@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Penghuni extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id','nama', 'no_hp', 'nik', 'foto_ktp', 'tanggal_masuk','kamar_id', 'status'];
+    protected $fillable = ['user_id', 'nama', 'no_hp', 'nik', 'foto_ktp', 'tanggal_masuk', 'kamar_id', 'status'];
 
     public function user()
     {
