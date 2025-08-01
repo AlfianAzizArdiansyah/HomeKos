@@ -5,12 +5,8 @@
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-2xl font-semibold">Riwayat Pembayaran</h2>
             <div class="flex items-center gap-4">
-                <select class="border rounded-md px-3 py-1 text-gray-700">
-                    <option>2025</option>
-                    <!-- Tambahkan tahun lainnya jika perlu -->
-                </select>
                 <a href="{{ route('penghuni.pembayaran.cetak-pdf') }}" target="_blank"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md">
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md shadow transition duration-200">
                     Unduh PDF
                 </a>
             </div>
@@ -35,6 +31,7 @@
                             <th class="py-2 px-4 border">Tanggal Bayar</th>
                             <th class="py-2 px-4 border">Jumlah</th>
                             <th class="py-2 px-4 border">Bukti Bayar</th>
+                            <th class="py-2 px-4 border">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,6 +48,13 @@
                                     @else
                                         -
                                     @endif
+                                </td>
+
+                                <td>
+                                    <a href="{{ route('penghuni.invoice', $data->id) }}" target="_blank"
+                                        class="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1 rounded-md shadow">
+                                        Invoice
+                                    </a>
                                 </td>
                             </tr>
                         @empty
