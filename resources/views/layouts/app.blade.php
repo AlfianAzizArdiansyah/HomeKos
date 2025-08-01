@@ -107,6 +107,18 @@
                         Update Password
                     </a>
 
+                    <!-- Hubungi Admin via WhatsApp -->
+                    @php
+                        $nomorWA = preg_replace('/^0/', '62', '085643358281'); // Ganti dengan nomor admin
+                        $pesanWA = "";
+                    @endphp
+
+                    <a href="https://wa.me/{{ $nomorWA }}?text={{ urlencode($pesanWA) }}" target="_blank"
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-green-100 text-md font-bold text-gray-700">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i>
+                        Hubungi Admin
+                    </a>
+
                     {{-- <a href="{{ route('penghuni.profil') }}"
                         class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold {{ request()->routeIs('penghuni.riwayat-bayar') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
                         <i data-lucide="user" class="w-5 h-5"></i>
