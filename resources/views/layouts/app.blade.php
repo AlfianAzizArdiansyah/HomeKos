@@ -56,8 +56,7 @@
                     </a>
 
                     <!-- Pembayaran -->
-                    <div x-data="{ open: {{ request()->routeIs('admin.pembayaran.*') ? 'true' : 'false' }} }"
-                        class="relative">
+                    <div x-data="{ open: {{ request()->routeIs('admin.pembayaran.*') ? 'true' : 'false' }} }" class="relative">
                         <button @click="open = !open"
                             class="w-full flex items-center justify-between px-4 py-2 rounded-lg hover:bg-blue-100 transition text-[16px] font-semibold {{ request()->routeIs('admin.pembayaran.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
                             <span class="flex items-center gap-2">
@@ -79,11 +78,14 @@
                             </a>
                         </div>
                     </div>
-                    {{-- <a href="{{ route('admin.profil') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold {{ request()->routeIs('penghuni.riwayat-bayar') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                        <i data-lucide="user" class="w-5 h-5"></i>
-                        Profil
-                    </a> --}}
+
+
+                    <!-- Data Pengaduan -->
+                    <a href="{{ route('admin.pengaduan.index') }}"
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-[16px] font-semibold {{ request()->routeIs('penghuni.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                        Data Pengaduan
+                    </a>
                 @endif
                 @if (Auth::user()->role === 'penghuni')
                     <!-- Dashboard -->
@@ -100,6 +102,13 @@
                         Riwayat Pembayaran
                     </a>
 
+                    <!-- Pengaduan -->
+                    <a href="{{ route('penghuni.pengaduan.index') }}"
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold {{ request()->routeIs('penghuni.riwayat-bayar') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
+                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                        Pengaduan
+                    </a>
+
                     <!-- Update Password -->
                     <a href="{{ route('penghuni.update-password') }}"
                         class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold {{ request()->routeIs('penghuni.update-password') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
@@ -110,7 +119,7 @@
                     <!-- Hubungi Admin via WhatsApp -->
                     @php
                         $nomorWA = preg_replace('/^0/', '62', '085643358281'); // Ganti dengan nomor admin
-                        $pesanWA = "";
+                        $pesanWA = '';
                     @endphp
 
                     <a href="https://wa.me/{{ $nomorWA }}?text={{ urlencode($pesanWA) }}" target="_blank"
@@ -124,7 +133,6 @@
                         <i data-lucide="user" class="w-5 h-5"></i>
                         Profil
                     </a> --}}
-
                 @endif
 
                 {{-- <!-- Laporan -->

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminPengaduanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,7 @@ use App\Http\Controllers\KamarController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PenghuniController;
 use App\Http\Controllers\PenghuniKostController;
 use App\Http\Controllers\ProfileController;
@@ -69,6 +71,11 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'role:admin'])->group(
 
     Route::get('/profil', [ProfileController::class, 'index'])->name('profil');
 
+    // pengaduan
+    Route::resource('pengaduan', AdminPengaduanController::class);
+
+
+
 
     // Laporan
     // Route::resource('laporan', LaporanController::class);
@@ -87,5 +94,7 @@ Route::prefix('penghuni')->as('penghuni.')->middleware(['auth', 'role:penghuni']
     Route::get('/transfer/{id}', [PembayaranController::class, 'showTransfer'])->name('transfer');
     Route::get('/pembayaran/cetak-pdf', [PembayaranController::class, 'cetakPDF'])->name('pembayaran.cetak-pdf');
     Route::get('/penghuni/invoice/{id}', [PembayaranController::class, 'cetakInvoice'])->name('invoice');
+    Route::get('/pengaduan', [PengaduanController::class, 'index'])->name('pengaduan.index');
+    Route::post('/pengaduan', [PengaduanController::class, 'store'])->name('pengaduan.store');
 
 });
