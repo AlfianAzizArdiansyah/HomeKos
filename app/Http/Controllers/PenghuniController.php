@@ -23,7 +23,6 @@ class penghuniController extends Controller
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            // 'password' => 'required|string|min:6',
             'no_hp' => 'required|string|max:20',
             'nik' => 'required|string|max:20',
             'foto_ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
@@ -36,10 +35,8 @@ class penghuniController extends Controller
         // Simpan user terlebih dahulu
         $user = User::create([
             'name' => $validated['nama'],
-            //'email' => strtolower(str_replace(' ', '', $validated['nama'])) . rand(100, 999) . '@gmail.com', // email dummy unik
             'password' => Hash::make('password'), // password default
             'email' => $validated['email'],
-            // 'password' => Hash::make($validated['password']),
             'role' => 'penghuni',
         ]);
 
@@ -65,24 +62,27 @@ class penghuniController extends Controller
         return redirect()->back()->with('success', 'Penghuni berhasil ditambahkan.');
     }
 
-    public function edit(penghuni $penghuni)
-    {
-        $kamars = Kamar::all();
-        return view('admin.penghuni.create', compact('penghuni', 'kamars'));
-    }
-
     public function update(Request $request, Penghuni $penghuni)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $penghuni->user->id,
             'no_hp' => 'required|string|max:15',
             'nik' => 'required|string|max:16',
             'status' => 'required|in:aktif,keluar',
             'kamar_id' => 'nullable|exists:kamars,id',
             'tanggal_masuk' => 'required|date',
+            'foto_ktp' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+
         ]);
 
         $kamarLama = $penghuni->kamar_id;
+
+        // Update user data (nama dan email)
+        $penghuni->user->update([
+            'name' => $request->nama,
+            'email' => $request->email,
+        ]);
 
         // Update foto jika ada
         if ($request->hasFile('foto_ktp')) {
@@ -91,6 +91,7 @@ class penghuniController extends Controller
             }
             $penghuni->foto_ktp = $request->file('foto_ktp')->store('ktp', 'public');
         }
+
 
         $penghuni->update([
             'nama' => $request->nama,

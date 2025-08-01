@@ -42,6 +42,14 @@
                     required>
             </div>
 
+            <!-- Email -->
+            <div>
+                <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
+                <input type="email" name="email" id="email" placeholder="email@gmail.com" x-model="penghuniData.user?.email"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    required>
+            </div>
+
             <!-- No HP -->
             <div>
                 <label for="edit_no_hp" class="block text-sm font-semibold text-gray-700 mb-1">No HP</label>
