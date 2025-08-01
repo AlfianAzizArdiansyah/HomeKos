@@ -109,7 +109,7 @@
 
                     <!-- Hubungi Admin via WhatsApp -->
                     @php
-                        $nomorWA = preg_replace('/^0/', '62', '085643358281'); // Ganti dengan nomor admin
+                        $nomorWA = preg_replace('/^0/', '62', '085876014181'); // Ganti dengan nomor admin
                         $pesanWA = "";
                     @endphp
 
