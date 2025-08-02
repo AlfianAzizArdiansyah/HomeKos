@@ -91,8 +91,8 @@
 
         <div class="flex justify-center">
             <a href="{{ route('penghuni.dashboard') }}"
-                class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition duration-200 whitespace-nowrap text-center">
-                Kembali ke Dashboard
+                class="w-40 bg-blue-600 hover:bg-blue-700 text-white text-lg font-medium py-3 rounded-xl shadow-md text-center">
+                Kembali
             </a>
         </div>
     </div>
