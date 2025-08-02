@@ -1,43 +1,3 @@
-{{-- @extends('layouts.app')
-
-@section('content')
-    <div class="max-w-5xl mx-auto mt-10 bg-white p-6 rounded shadow">
-        <h2 class="text-2xl font-bold mb-6">Daftar Pengaduan Penghuni</h2>
-
-        @if (session('success'))
-            <div class="bg-green-100 text-green-700 p-2 rounded mb-4">{{ session('success') }}</div>
-        @endif
-
-        @forelse($pengaduans as $item)
-            <div class="border p-4 rounded mb-6">
-              <p class="text-sm text-gray-600 mb-4"><strong>Penghuni:</strong> {{ $item->user->name }}</p>
-                <div class="flex justify-between items-center mb-2">
-                    <h3 class="text-lg font-semibold">Judul : {{ $item->judul }}</h3>
-                    <span class="text-sm text-gray-500">{{ $item->created_at->format('d M Y H:i') }}</span>
-                </div>
-                <p class="mb-2 text-gray-700">Deskripsi : {{ $item->deskripsi }}</p>
-                @if ($item->lampiran)
-                    <p class="mt-2 text-gray-700"> Lampiran : 
-                        <a href="{{ asset('storage/' . $item->lampiran) }}" target="_blank" class="text-blue-600 underline">
-                            Lihat Lampiran
-                        </a>
-                    </p>
-                @endif  
-                <form action="{{ route('admin.pengaduan.update', $item->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <p class="text-gray-700">Tanggapan</p>
-                    <textarea name="tanggapan" rows="3" class="border p-2 w-full">{{ old('tanggapan', $item->tanggapan) }}</textarea>
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 mt-2 rounded">Kirim Balasan</button>
-                </form>
-
-            </div>
-        @empty
-            <p class="text-gray-500">Belum ada pengaduan dari penghuni.</p>
-        @endforelse
-    </div>
-@endsection --}}
-
 @extends('layouts.app')
 
 @section('content')
@@ -49,7 +9,7 @@
         @endif
 
         @if($pengaduans->count())
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto rounded-lg shadow mt-10">
                 <table class="min-w-full table-auto border border-gray-200">
                     <thead>
                         <tr class="bg-gray-100 text-left text-sm">

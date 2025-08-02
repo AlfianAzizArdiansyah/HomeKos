@@ -13,11 +13,11 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-y-2 text-md text-gray-700 p-6">
-                    {{-- Nomor Kamar --}}
+                    <!-- Nomor Kamar -->
                     <div class="font-semibold">Nomor Kamar </div>
                     <div>: {{ $kamar->nama_kamar ?? '-' }}</div>
 
-                    {{-- Fasilitas --}}
+                    <!-- Fasilitas -->
                     <div class="font-semibold">Fasilitas </div>
                     <div class="flex flex-wrap gap-2">:
                         @foreach ($kamar->fasilitas as $fasilitas)
@@ -27,11 +27,11 @@
                         @endforeach
                     </div>
 
-                    {{-- Harga --}}
+                    <!-- Harga -->
                     <div class="font-semibold">Harga </div>
                     <div>: Rp {{ number_format($kamar->harga ?? 0, 0, ',', '.') }}/bulan</div>
 
-                    {{-- Status --}}
+                    <!-- Status -->
                     <div class="font-semibold">Status </div>
                     <div>: {{ $kamar->status ?? '-' }}</div>
                 </div>

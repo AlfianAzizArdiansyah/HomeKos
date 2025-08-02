@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'Kost App') }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -22,131 +21,22 @@
     </style>
 </head>
 
-<body class="h-screen overflow-hidden bg-[#f9fafb] text-gray-800 antialiased font-sans">
-    <div class="h-full flex" x-data="{ menuOpen: false, submenuOpen: false }">
-        <aside class="w-64 h-full flex flex-col justify-between bg-white border-r shadow-sm">
-            <div class="p-4 text-4xl font-extrabold text-blue-700 tracking-wide">HomeKos</div>
+<body class="font-sans antialiased text-gray-800 bg-[#f9fafb]">
+    <div x-data="{ sidebarOpen: false }" class="flex h-screen overflow-hidden">
 
-            <nav class="flex-1 space-y-4 px-4 py-4 text-[17px]">
-                @if (Auth::user()->role === 'admin')
-                    <!-- Dashboard -->
-                    <a href="{{ route('admin.dashboard') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-xl font-bold {{ request()->routeIs('dashboard') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                        Dashboard
-                    </a>
+        <!-- Sidebar -->
+        <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+            class="fixed inset-y-0 left-0 z-30 w-64 bg-white border-r shadow-md transition-transform transform md:translate-x-0 md:static md:inset-0 flex flex-col justify-between"
+            x-cloak>
 
-                    <!-- Label MENU -->
-                    <div class=" pt-2 pb-2 text-xs text-gray-500 uppercase tracking-wider">
-                        MENU
-                    </div>
+            <div>
+                <div class="p-4 text-4xl font-extrabold text-blue-700">HomeKos</div>
+                <nav class="px-4 py-2 space-y-3 text-[17px]">
+                    @include('components.sidebar')
+                </nav>
+            </div>
 
-                    <!-- Kamar -->
-                    <a href="{{ route('admin.kamar.index') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-[16px] font-semibold {{ request()->routeIs('kamar.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                        <i data-lucide="door-open" class="w-5 h-5"></i>
-                        Kamar
-                    </a>
-
-                    <!-- Penghuni -->
-                    <a href="{{ route('admin.penghuni.index') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-[16px] font-semibold {{ request()->routeIs('penghuni.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                        <i data-lucide="users" class="w-5 h-5"></i>
-                        Penghuni
-                    </a>
-
-                    <!-- Pembayaran -->
-                    <div x-data="{ open: {{ request()->routeIs('admin.pembayaran.*') ? 'true' : 'false' }} }"
-                        class="relative">
-                        <button @click="open = !open"
-                            class="w-full flex items-center justify-between px-4 py-2 rounded-lg hover:bg-blue-100 transition text-[16px] font-semibold {{ request()->routeIs('admin.pembayaran.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                            <span class="flex items-center gap-2">
-                                <i data-lucide="wallet" class="w-5 h-5"></i>
-                                Pembayaran
-                            </span>
-                            <i data-lucide="chevron-right" :class="{ 'rotate-90': open }"
-                                class="w-5 h-5 transform transition-transform"></i>
-                        </button>
-
-                        <div x-show="open" x-cloak x-transition class="mt-1 space-y-1">
-                            <a href="{{ route('admin.pembayaran.index') }}"
-                                class="block px-4 py-2 text-[16px] rounded hover:bg-blue-50 {{ request()->routeIs('admin.pembayaran.index') ? 'text-blue-700 font-medium' : 'text-gray-600' }}">
-                                Tagihan
-                            </a>
-                            <a href="{{ route('admin.pembayaran.riwayat') }}"
-                                class="block px-4 py-2 text-[16px] rounded hover:bg-blue-50 {{ request()->routeIs('admin.pembayaran.riwayat') ? 'text-blue-700 font-medium' : 'text-gray-600' }}">
-                                Riwayat Pembayaran
-                            </a>
-                        </div>
-                    </div>
-
-
-                    <!-- Data Pengaduan -->
-                    <a href="{{ route('admin.pengaduan.index') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-[16px] font-semibold {{ request()->routeIs('penghuni.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                        <i data-lucide="file-text" class="w-5 h-5"></i>
-                        Data Pengaduan
-                    </a>
-                @endif
-                @if (Auth::user()->role === 'penghuni')
-                    <!-- Dashboard -->
-                    <a href="{{ route('penghuni.dashboard') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-lg font-bold {{ request()->routeIs('penghuni.dashboard') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                        Dashboard
-                    </a>
-
-                    <!-- Riwayat bayar -->
-                    <a href="{{ route('penghuni.pembayaran.riwayat-bayar') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold {{ request()->routeIs('penghuni.riwayat-bayar') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                        <i data-lucide="history" class="w-5 h-5"></i>
-                        Riwayat Pembayaran
-                    </a>
-
-                    <!-- Pengaduan -->
-                    <a href="{{ route('penghuni.pengaduan.index') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold {{ request()->routeIs('penghuni.riwayat-bayar') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
-                        Pengaduan
-                    </a>
-
-                    <!-- Update Password -->
-                    <a href="{{ route('penghuni.password.update-password') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold {{ request()->routeIs('penghuni.update-password') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                        <i data-lucide="lock-keyhole" class="w-5 h-5"></i>
-                        Update Password
-                    </a>
-
-                    <!-- Hubungi Admin via WhatsApp -->
-                    @php
-
-                        $nomorWA = preg_replace('/^0/', '62', '085876014181'); // Ganti dengan nomor admin
-                        $pesanWA = "";
-
-                    @endphp
-
-                    <a href="https://wa.me/{{ $nomorWA }}?text={{ urlencode($pesanWA) }}" target="_blank"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold">
-                        <i data-lucide="message-circle" class="w-5 h-5"></i>
-                        Hubungi Admin
-                    </a>
-
-                    {{-- <a href="{{ route('penghuni.profil') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-md font-bold {{ request()->routeIs('penghuni.riwayat-bayar') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                        <i data-lucide="user" class="w-5 h-5"></i>
-                        Profil
-                    </a> --}}
-                @endif
-
-                {{-- <!-- Laporan -->
-                <a href="{{ route('admin.laporan.index') }}"
-                    class="flex items-center gap-2 px-4 py-2 rounded-lg transition hover:bg-blue-100 text-[16px] font-semibold {{ request()->routeIs('laporan.*') ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
-                    <i data-lucide="file-bar-chart" class="w-5 h-5"></i>
-                    Laporan
-                </a> --}}
-            </nav>
-
-            <!-- Logout -->
+            <!-- Logout / Profile -->
             <div class="px-4 pb-4" x-data="{ openProfile: false }">
                 <button @click="openProfile = !openProfile"
                     class="w-full flex items-center justify-between px-4 py-2 bg-white border border-blue-200 rounded-lg shadow hover:shadow-md transition">
@@ -163,18 +53,18 @@
                 </button>
 
                 <div x-show="openProfile" @click.away="openProfile = false" x-cloak
-                    class="mt-1 w-full bg-white border border-blue-200 rounded-md shadow z-50">
+                    class="mt-1 bg-white border border-blue-200 rounded-md shadow">
                     @if (Auth::check())
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit"
-                                class="w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 text-left rounded-b-md">
+                                class="w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 text-left">
                                 <i data-lucide="log-out" class="inline w-4 h-4 mr-2"></i> Logout
                             </button>
                         </form>
                     @else
                         <a href="{{ route('login') }}"
-                            class="block px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 text-left rounded-b-md">
+                            class="block px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 text-left">
                             <i data-lucide="log-in" class="inline w-4 h-4 mr-2"></i> Login
                         </a>
                     @endif
@@ -182,21 +72,34 @@
             </div>
         </aside>
 
-        <main class="flex-1 p-6 bg-[#f1f5f9] overflow-y-auto h-full">
-            @if (isset($header))
-                <header class="mb-4">
-                    <div class="text-2xl font-semibold text-gray-800">
+        <!-- Overlay on mobile -->
+        <div x-show="sidebarOpen" @click="sidebarOpen = false" x-cloak
+            class="fixed inset-0 z-20 bg-black bg-opacity-50 md:hidden"></div>
+
+        <!-- Main content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top bar -->
+            <header class="flex items-center justify-between bg-white shadow px-4 py-3 md:hidden">
+                <button @click="sidebarOpen = true" class="text-gray-600 focus:outline-none">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <h1 class="text-lg font-semibold text-blue-700">HomeKos</h1>
+            </header>
+
+            <!-- Page content -->
+            <main class="flex-1 overflow-y-auto p-4 bg-[#f1f5f9]">
+                @if (isset($header))
+                    <div class="mb-4 text-2xl font-semibold text-gray-800">
                         {{ $header }}
                     </div>
-                </header>
-            @endif
+                @endif
 
-            @yield('content')
-        </main>
+                @yield('content')
+            </main>
+        </div>
     </div>
 
     @stack('scripts')
-
     <script>
         lucide.createIcons();
     </script>

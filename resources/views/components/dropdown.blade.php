@@ -1,39 +1,17 @@
-@props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1 bg-white dark:bg-gray-700'])
+@props(['title', 'icon', 'open' => false])
 
-@php
-    switch ($align) {
-        case 'left':
-            $alignmentClasses = 'ltr:origin-top-left rtl:origin-top-right start-0';
-            break;
-        case 'top':
-            $alignmentClasses = 'origin-top';
-            break;
-        case 'right':
-        default:
-            $alignmentClasses = 'ltr:origin-top-right rtl:origin-top-left end-0';
-            break;
-    }
+<div x-data="{ open: {{ $open ? 'true' : 'false' }} }" class="relative">
+    <button @click="open = !open"
+        class="w-full flex items-center justify-between px-4 py-2 rounded-lg hover:bg-blue-100 transition text-[16px] font-semibold
+            {{ $open ? 'bg-blue-200 text-blue-900' : 'text-gray-700' }}">
+        <span class="flex items-center gap-2">
+            <i data-lucide="{{ $icon }}" class="w-5 h-5"></i>
+            {{ $title }}
+        </span>
+        <i data-lucide="chevron-right" :class="{ 'rotate-90': open }" class="w-5 h-5 transform transition-transform"></i>
+    </button>
 
-    switch ($width) {
-        case '48':
-            $width = 'w-48';
-            break;
-    }
-@endphp
-
-<div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-    <div @click="open = ! open">
-        {{ $trigger }}
-    </div>
-
-    <div x-show="open" x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-        x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100 scale-100"
-        x-transition:leave-end="opacity-0 scale-95"
-        class="absolute z-50 mt-2 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }}" style="display: none;"
-        @click="open = false">
-        <div class="rounded-md ring-1 ring-black ring-opacity-5 {{ $contentClasses }}">
-            {{ $content }}
-        </div>
+    <div x-show="open" x-cloak x-transition class="mt-1 space-y-1">
+        {{ $slot }}
     </div>
 </div>
