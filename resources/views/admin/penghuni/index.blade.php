@@ -3,10 +3,11 @@
     <div x-data="{ tambahPenghuni: false, editPenghuni: false, penghuniData: {} }" class="p-6 bg-white rounded-xl shadow-md">
 
         <!-- Judul & Tombol -->
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-4xl font-extrabold text-gray-800 tracking-wide">Manajemen Penghuni</h1>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 tracking-wide">Manajemen Penghuni</h1>
             <button @click="tambahPenghuni = true"
-                class="bg-blue-600 text-white text-lg px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition-all duration-200">
+                class="bg-blue-600 text-white text-base md:text-lg px-5 py-2 md:px-6 md:py-3 rounded-lg shadow hover:bg-blue-700 transition-all">
+
                 Tambah Penghuni
             </button>
         </div>
